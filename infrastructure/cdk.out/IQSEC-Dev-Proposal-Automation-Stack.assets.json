@@ -1,0 +1,36 @@
+{
+  "version": "54.0.0",
+  "files": {
+    "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "IQSEC-Dev-Proposal-Automation-Stack/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
+      "source": {
+        "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "251388487610-us-east-1-98d016eb": {
+          "bucketName": "cdk-hnb659fds-assets-251388487610-us-east-1",
+          "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::251388487610:role/cdk-hnb659fds-file-publishing-role-251388487610-us-east-1"
+        }
+      }
+    },
+    "d1196caed22d6c7f8574e92364262fd2b60038c1e0894f77c5e883fb869c451a": {
+      "displayName": "IQSEC-Dev-Proposal-Automation-Stack Template",
+      "source": {
+        "path": "IQSEC-Dev-Proposal-Automation-Stack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "251388487610-us-east-1-94c5f264": {
+          "bucketName": "cdk-hnb659fds-assets-251388487610-us-east-1",
+          "objectKey": "d1196caed22d6c7f8574e92364262fd2b60038c1e0894f77c5e883fb869c451a.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::251388487610:role/cdk-hnb659fds-file-publishing-role-251388487610-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

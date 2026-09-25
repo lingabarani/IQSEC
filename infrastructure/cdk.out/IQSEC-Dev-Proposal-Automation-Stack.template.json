@@ -1,0 +1,1784 @@
+{
+ "Description": "IQSEC GenAI Proposal Automation Platform [DEV] Infrastructure",
+ "Resources": {
+  "devSecurityIQSECMasterKmsKey1A6439F8": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "Description": "KMS Key for IQSEC [DEV] Proposal Platform (S3, RDS, OpenSearch)",
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::251388487610:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Condition": {
+        "StringEquals": {
+         "kms:ViaService": "secretsmanager.us-east-1.amazonaws.com"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::251388487610:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+       ],
+       "Condition": {
+        "StringEquals": {
+         "kms:ViaService": "secretsmanager.us-east-1.amazonaws.com"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::251388487610:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECMasterKmsKey/Resource"
+   }
+  },
+  "devSecurityIQSECMasterKmsKeyAlias38ACBC82": {
+   "Type": "AWS::KMS::Alias",
+   "Properties": {
+    "AliasName": "alias/iqsec-dev-proposal-platform",
+    "TargetKeyId": {
+     "Fn::GetAtt": [
+      "devSecurityIQSECMasterKmsKey1A6439F8",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECMasterKmsKey/Alias/Resource"
+   }
+  },
+  "devSecurityIQSECUserPool050DB3BA": {
+   "Type": "AWS::Cognito::UserPool",
+   "Properties": {
+    "AccountRecoverySetting": {
+     "RecoveryMechanisms": [
+      {
+       "Name": "verified_email",
+       "Priority": 1
+      }
+     ]
+    },
+    "AdminCreateUserConfig": {
+     "AllowAdminCreateUserOnly": true
+    },
+    "AutoVerifiedAttributes": [
+     "email"
+    ],
+    "EmailVerificationMessage": "The verification code to your new account is {####}",
+    "EmailVerificationSubject": "Verify your new account",
+    "Policies": {
+     "PasswordPolicy": {
+      "MinimumLength": 8,
+      "RequireLowercase": true,
+      "RequireNumbers": true,
+      "RequireSymbols": false,
+      "RequireUppercase": true,
+      "TemporaryPasswordValidityDays": 7
+     }
+    },
+    "Schema": [
+     {
+      "Mutable": false,
+      "Name": "email",
+      "Required": true
+     },
+     {
+      "Mutable": true,
+      "Name": "name",
+      "Required": true
+     },
+     {
+      "AttributeDataType": "String",
+      "Mutable": true,
+      "Name": "customer_scopes"
+     },
+     {
+      "AttributeDataType": "String",
+      "Mutable": true,
+      "Name": "nda_level"
+     }
+    ],
+    "SmsVerificationMessage": "The verification code to your new account is {####}",
+    "UserPoolName": "iqsec-dev-proposal-user-pool",
+    "UsernameAttributes": [
+     "email"
+    ],
+    "VerificationMessageTemplate": {
+     "DefaultEmailOption": "CONFIRM_WITH_CODE",
+     "EmailMessage": "The verification code to your new account is {####}",
+     "EmailSubject": "Verify your new account",
+     "SmsMessage": "The verification code to your new account is {####}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECUserPool/Resource"
+   }
+  },
+  "devSecurityIQSECUserPoolIQSECWebClientE7FD9829": {
+   "Type": "AWS::Cognito::UserPoolClient",
+   "Properties": {
+    "AccessTokenValidity": 60,
+    "AllowedOAuthFlows": [
+     "implicit",
+     "code"
+    ],
+    "AllowedOAuthFlowsUserPoolClient": true,
+    "AllowedOAuthScopes": [
+     "profile",
+     "phone",
+     "email",
+     "openid",
+     "aws.cognito.signin.user.admin"
+    ],
+    "CallbackURLs": [
+     "https://example.com"
+    ],
+    "ClientName": "iqsec-dev-web-app-client",
+    "ExplicitAuthFlows": [
+     "ALLOW_USER_PASSWORD_AUTH",
+     "ALLOW_USER_SRP_AUTH",
+     "ALLOW_REFRESH_TOKEN_AUTH"
+    ],
+    "GenerateSecret": false,
+    "IdTokenValidity": 60,
+    "PreventUserExistenceErrors": "ENABLED",
+    "RefreshTokenValidity": 43200,
+    "SupportedIdentityProviders": [
+     "COGNITO"
+    ],
+    "TokenValidityUnits": {
+     "AccessToken": "minutes",
+     "IdToken": "minutes",
+     "RefreshToken": "minutes"
+    },
+    "UserPoolId": {
+     "Ref": "devSecurityIQSECUserPool050DB3BA"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECUserPool/IQSECWebClient/Resource"
+   }
+  },
+  "devSecurityGroupPreSalesAnalyst8FBD8279": {
+   "Type": "AWS::Cognito::UserPoolGroup",
+   "Properties": {
+    "Description": "Pre-Sales & Licitation Analysts: Can upload RFPs and edit compliance matrix",
+    "GroupName": "DEV_PreSalesAnalyst",
+    "Precedence": 10,
+    "UserPoolId": {
+     "Ref": "devSecurityIQSECUserPool050DB3BA"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Security/GroupPreSalesAnalyst"
+   }
+  },
+  "devSecurityGroupCommercialManager959CEF51": {
+   "Type": "AWS::Cognito::UserPoolGroup",
+   "Properties": {
+    "Description": "Commercial Managers: Can approve proposals and trigger deliverable exports",
+    "GroupName": "DEV_CommercialManager",
+    "Precedence": 5,
+    "UserPoolId": {
+     "Ref": "devSecurityIQSECUserPool050DB3BA"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Security/GroupCommercialManager"
+   }
+  },
+  "devSecurityGroupSOCArchitect4B6127B2": {
+   "Type": "AWS::Cognito::UserPoolGroup",
+   "Properties": {
+    "Description": "SOC Solution Architects: Can manage IQSEC technical knowledge catalog",
+    "GroupName": "DEV_SOCSolutionsArchitect",
+    "Precedence": 1,
+    "UserPoolId": {
+     "Ref": "devSecurityIQSECUserPool050DB3BA"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Security/GroupSOCArchitect"
+   }
+  },
+  "devSecurityIQSECDbSecret7DDBC9B8": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": "PostgreSQL credentials for IQSEC [DEV] Proposal Platform",
+    "GenerateSecretString": {
+     "ExcludeCharacters": "\"@/\\' ",
+     "GenerateStringKey": "password",
+     "SecretStringTemplate": "{\"username\":\"iqsec_admin\"}"
+    },
+    "KmsKeyId": {
+     "Fn::GetAtt": [
+      "devSecurityIQSECMasterKmsKey1A6439F8",
+      "Arn"
+     ]
+    },
+    "Name": "iqsec/dev/rds/postgres-credentials"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECDbSecret/Resource"
+   }
+  },
+  "devSecurityIQSECDbSecretAttachment15F97A25": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "devSecurityIQSECDbSecret7DDBC9B8"
+    },
+    "TargetId": {
+     "Ref": "devDatabaseIQSECRDSPostgresD8144CD6"
+    },
+    "TargetType": "AWS::RDS::DBInstance"
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECDbSecret/Attachment/Resource"
+   }
+  },
+  "devNetworkingIQSECVpc6A53E85A": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/Resource"
+   }
+  },
+  "devNetworkingIQSECVpcdevPublicSubnet1Subnet29FC7A51": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "dev-Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/Subnet"
+   }
+  },
+  "devNetworkingIQSECVpcdevPublicSubnet1RouteTable736CB544": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/RouteTable"
+   }
+  },
+  "devNetworkingIQSECVpcdevPublicSubnet1RouteTableAssociationF5CA5FEA": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "devNetworkingIQSECVpcdevPublicSubnet1RouteTable736CB544"
+    },
+    "SubnetId": {
+     "Ref": "devNetworkingIQSECVpcdevPublicSubnet1Subnet29FC7A51"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "devNetworkingIQSECVpcdevPublicSubnet1DefaultRoute465724AA": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "devNetworkingIQSECVpcIGW395937D3"
+    },
+    "RouteTableId": {
+     "Ref": "devNetworkingIQSECVpcdevPublicSubnet1RouteTable736CB544"
+    }
+   },
+   "DependsOn": [
+    "devNetworkingIQSECVpcVPCGWAF1FE9E7"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/DefaultRoute"
+   }
+  },
+  "devNetworkingIQSECVpcdevPublicSubnet1EIP99CD5498": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/EIP"
+   }
+  },
+  "devNetworkingIQSECVpcdevPublicSubnet1NATGatewayE702819B": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "devNetworkingIQSECVpcdevPublicSubnet1EIP99CD5498",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "devNetworkingIQSECVpcdevPublicSubnet1Subnet29FC7A51"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "devNetworkingIQSECVpcdevPublicSubnet1DefaultRoute465724AA",
+    "devNetworkingIQSECVpcdevPublicSubnet1RouteTableAssociationF5CA5FEA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/NATGateway"
+   }
+  },
+  "devNetworkingIQSECVpcdevPublicSubnet2Subnet16A7BDD8": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "dev-Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet2/Subnet"
+   }
+  },
+  "devNetworkingIQSECVpcdevPublicSubnet2RouteTable57BD1434": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet2/RouteTable"
+   }
+  },
+  "devNetworkingIQSECVpcdevPublicSubnet2RouteTableAssociation3EA0612A": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "devNetworkingIQSECVpcdevPublicSubnet2RouteTable57BD1434"
+    },
+    "SubnetId": {
+     "Ref": "devNetworkingIQSECVpcdevPublicSubnet2Subnet16A7BDD8"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "devNetworkingIQSECVpcdevPublicSubnet2DefaultRoute48FB9233": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "devNetworkingIQSECVpcIGW395937D3"
+    },
+    "RouteTableId": {
+     "Ref": "devNetworkingIQSECVpcdevPublicSubnet2RouteTable57BD1434"
+    }
+   },
+   "DependsOn": [
+    "devNetworkingIQSECVpcVPCGWAF1FE9E7"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet2/DefaultRoute"
+   }
+  },
+  "devNetworkingIQSECVpcdevPrivateAppSubnet1Subnet35830517": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.2.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "dev-PrivateApp"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet1/Subnet"
+   }
+  },
+  "devNetworkingIQSECVpcdevPrivateAppSubnet1RouteTableAF438586": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet1/RouteTable"
+   }
+  },
+  "devNetworkingIQSECVpcdevPrivateAppSubnet1RouteTableAssociationEFAF1DC7": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "devNetworkingIQSECVpcdevPrivateAppSubnet1RouteTableAF438586"
+    },
+    "SubnetId": {
+     "Ref": "devNetworkingIQSECVpcdevPrivateAppSubnet1Subnet35830517"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet1/RouteTableAssociation"
+   }
+  },
+  "devNetworkingIQSECVpcdevPrivateAppSubnet1DefaultRouteC412BC61": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "devNetworkingIQSECVpcdevPublicSubnet1NATGatewayE702819B"
+    },
+    "RouteTableId": {
+     "Ref": "devNetworkingIQSECVpcdevPrivateAppSubnet1RouteTableAF438586"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet1/DefaultRoute"
+   }
+  },
+  "devNetworkingIQSECVpcdevPrivateAppSubnet2Subnet4C9EE767": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.3.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "dev-PrivateApp"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet2/Subnet"
+   }
+  },
+  "devNetworkingIQSECVpcdevPrivateAppSubnet2RouteTable0B6CF992": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet2/RouteTable"
+   }
+  },
+  "devNetworkingIQSECVpcdevPrivateAppSubnet2RouteTableAssociation1AE819ED": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "devNetworkingIQSECVpcdevPrivateAppSubnet2RouteTable0B6CF992"
+    },
+    "SubnetId": {
+     "Ref": "devNetworkingIQSECVpcdevPrivateAppSubnet2Subnet4C9EE767"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet2/RouteTableAssociation"
+   }
+  },
+  "devNetworkingIQSECVpcdevPrivateAppSubnet2DefaultRouteC68FD0FC": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "devNetworkingIQSECVpcdevPublicSubnet1NATGatewayE702819B"
+    },
+    "RouteTableId": {
+     "Ref": "devNetworkingIQSECVpcdevPrivateAppSubnet2RouteTable0B6CF992"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet2/DefaultRoute"
+   }
+  },
+  "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet1SubnetEEB020EE": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.4.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "dev-IsolatedDatabase"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet1/Subnet"
+   }
+  },
+  "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet1RouteTable1C1995EA": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet1/RouteTable"
+   }
+  },
+  "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet1RouteTableAssociationF2DCC072": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet1RouteTable1C1995EA"
+    },
+    "SubnetId": {
+     "Ref": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet1SubnetEEB020EE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet1/RouteTableAssociation"
+   }
+  },
+  "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet2SubnetCA5B740F": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.5.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "dev-IsolatedDatabase"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet2/Subnet"
+   }
+  },
+  "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet2RouteTable8F5A56C1": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet2/RouteTable"
+   }
+  },
+  "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet2RouteTableAssociation357E4856": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet2RouteTable8F5A56C1"
+    },
+    "SubnetId": {
+     "Ref": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet2SubnetCA5B740F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet2/RouteTableAssociation"
+   }
+  },
+  "devNetworkingIQSECVpcIGW395937D3": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/IGW"
+   }
+  },
+  "devNetworkingIQSECVpcVPCGWAF1FE9E7": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "devNetworkingIQSECVpcIGW395937D3"
+    },
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/VPCGW"
+   }
+  },
+  "devNetworkingIQSECAppSecurityGroup19374590": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security Group for IQSEC [DEV] Backend FastAPI Services",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECAppSecurityGroup/Resource"
+   }
+  },
+  "devNetworkingIQSECDbSecurityGroup075C9C37": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security Group for Amazon RDS PostgreSQL [DEV]",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "255.255.255.255/32",
+      "Description": "Disallow all traffic",
+      "FromPort": 252,
+      "IpProtocol": "icmp",
+      "ToPort": 86
+     }
+    ],
+    "VpcId": {
+     "Ref": "devNetworkingIQSECVpc6A53E85A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECDbSecurityGroup/Resource"
+   }
+  },
+  "devNetworkingIQSECDbSecurityGroupfromIQSECDevProposalAutomationStackdevNetworkingIQSECAppSecurityGroup4154AD6954328B976920": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow PostgreSQL connections strictly from App backend in dev",
+    "FromPort": 5432,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "devNetworkingIQSECDbSecurityGroup075C9C37",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "devNetworkingIQSECAppSecurityGroup19374590",
+      "GroupId"
+     ]
+    },
+    "ToPort": 5432
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECDbSecurityGroup/from IQSECDevProposalAutomationStackdevNetworkingIQSECAppSecurityGroup4154AD69:5432"
+   }
+  },
+  "devStorageIQSECRFPBucket88B2B9B6": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "BucketKeyEnabled": true,
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "devSecurityIQSECMasterKmsKey1A6439F8",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "Id": "TransitionOldRFPsToGlacier",
+       "Status": "Enabled",
+       "Transitions": [
+        {
+         "StorageClass": "GLACIER_IR",
+         "TransitionInDays": 90
+        }
+       ]
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ],
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECRFPBucket/Resource"
+   }
+  },
+  "devStorageIQSECRFPBucketPolicy5DCA3F78": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "devStorageIQSECRFPBucket88B2B9B6"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "devStorageIQSECRFPBucket88B2B9B6",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "devStorageIQSECRFPBucket88B2B9B6",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:PutBucketPolicy",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "devStorageIQSECRFPBucket88B2B9B6",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "devStorageIQSECRFPBucket88B2B9B6",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECRFPBucket/Policy/Resource"
+   }
+  },
+  "devStorageIQSECRFPBucketAutoDeleteObjectsCustomResource7C5C2B17": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "devStorageIQSECRFPBucket88B2B9B6"
+    }
+   },
+   "DependsOn": [
+    "devStorageIQSECRFPBucketPolicy5DCA3F78"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECRFPBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "devStorageIQSECKnowledgeBucketA3A6C43C": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "BucketKeyEnabled": true,
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "devSecurityIQSECMasterKmsKey1A6439F8",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ],
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECKnowledgeBucket/Resource"
+   }
+  },
+  "devStorageIQSECKnowledgeBucketPolicyB8C90F80": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "devStorageIQSECKnowledgeBucketA3A6C43C"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "devStorageIQSECKnowledgeBucketA3A6C43C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "devStorageIQSECKnowledgeBucketA3A6C43C",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:PutBucketPolicy",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "devStorageIQSECKnowledgeBucketA3A6C43C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "devStorageIQSECKnowledgeBucketA3A6C43C",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECKnowledgeBucket/Policy/Resource"
+   }
+  },
+  "devStorageIQSECKnowledgeBucketAutoDeleteObjectsCustomResource9B14D70D": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "devStorageIQSECKnowledgeBucketA3A6C43C"
+    }
+   },
+   "DependsOn": [
+    "devStorageIQSECKnowledgeBucketPolicyB8C90F80"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECKnowledgeBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "devStorageIQSECDeliverablesBucketE9B8D320": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "BucketKeyEnabled": true,
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "devSecurityIQSECMasterKmsKey1A6439F8",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ],
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECDeliverablesBucket/Resource"
+   }
+  },
+  "devStorageIQSECDeliverablesBucketPolicyDB14F7C3": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "devStorageIQSECDeliverablesBucketE9B8D320"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "devStorageIQSECDeliverablesBucketE9B8D320",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "devStorageIQSECDeliverablesBucketE9B8D320",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:PutBucketPolicy",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "devStorageIQSECDeliverablesBucketE9B8D320",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "devStorageIQSECDeliverablesBucketE9B8D320",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECDeliverablesBucket/Policy/Resource"
+   }
+  },
+  "devStorageIQSECDeliverablesBucketAutoDeleteObjectsCustomResource503C0135": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "devStorageIQSECDeliverablesBucketE9B8D320"
+    }
+   },
+   "DependsOn": [
+    "devStorageIQSECDeliverablesBucketPolicyDB14F7C3"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECDeliverablesBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-251388487610-us-east-1",
+     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs24.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "devStorageIQSECRFPBucket88B2B9B6"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+    "aws:asset:property": "Code"
+   }
+  },
+  "devDatabaseIQSECPostgresParams944D8BBD": {
+   "Type": "AWS::RDS::DBParameterGroup",
+   "Properties": {
+    "Description": "Parameter group for IQSEC Proposal Platform [DEV]",
+    "Family": "postgres16",
+    "Parameters": {
+     "shared_preload_libraries": "pg_stat_statements",
+     "log_connections": "1",
+     "log_disconnections": "1",
+     "log_duration": "1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Database/IQSECPostgresParams/Resource"
+   }
+  },
+  "devDatabaseIQSECRDSPostgresSubnetGroup6CE12B1E": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for IQSECRDSPostgres database",
+    "SubnetIds": [
+     {
+      "Ref": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet1SubnetEEB020EE"
+     },
+     {
+      "Ref": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet2SubnetCA5B740F"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Database/IQSECRDSPostgres/SubnetGroup/Default"
+   }
+  },
+  "devDatabaseIQSECRDSPostgresD8144CD6": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "20",
+    "AutoMinorVersionUpgrade": true,
+    "BackupRetentionPeriod": 1,
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.t4g.micro",
+    "DBInstanceIdentifier": "iqsec-dev-proposal-db",
+    "DBName": "iqsec_proposals",
+    "DBParameterGroupName": {
+     "Ref": "devDatabaseIQSECPostgresParams944D8BBD"
+    },
+    "DBSubnetGroupName": {
+     "Ref": "devDatabaseIQSECRDSPostgresSubnetGroup6CE12B1E"
+    },
+    "DeleteAutomatedBackups": true,
+    "Engine": "postgres",
+    "EngineVersion": "16",
+    "KmsKeyId": {
+     "Fn::GetAtt": [
+      "devSecurityIQSECMasterKmsKey1A6439F8",
+      "Arn"
+     ]
+    },
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "devSecurityIQSECDbSecret7DDBC9B8"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "devSecurityIQSECDbSecret7DDBC9B8"
+       },
+       ":SecretString:username::}}"
+      ]
+     ]
+    },
+    "MaxAllocatedStorage": 50,
+    "MultiAZ": false,
+    "PubliclyAccessible": false,
+    "StorageEncrypted": true,
+    "StorageType": "gp3",
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "devNetworkingIQSECDbSecurityGroup075C9C37",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Database/IQSECRDSPostgres/Resource"
+   }
+  },
+  "devOpenSearchIQSECOpenSearchEncryptionPolicyB04F09E0": {
+   "Type": "AWS::OpenSearchServerless::SecurityPolicy",
+   "Properties": {
+    "Description": "KMS encryption policy for OpenSearch Serverless collection [DEV]",
+    "Name": "iqsec-dev-kb-enc-policy",
+    "Policy": "{\"Rules\": [{\"ResourceType\": \"collection\", \"Resource\": [\"collection/iqsec-dev-kb\"]}], \"AWSOwnedKey\": true}",
+    "Type": "encryption"
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-OpenSearch/IQSECOpenSearchEncryptionPolicy"
+   }
+  },
+  "devOpenSearchIQSECOpenSearchNetworkPolicy35A78C9F": {
+   "Type": "AWS::OpenSearchServerless::SecurityPolicy",
+   "Properties": {
+    "Description": "Network policy for OpenSearch Serverless collection [DEV]",
+    "Name": "iqsec-dev-kb-net-policy",
+    "Policy": "[{\"Rules\": [{\"ResourceType\": \"collection\", \"Resource\": [\"collection/iqsec-dev-kb\"]}, {\"ResourceType\": \"dashboard\", \"Resource\": [\"collection/iqsec-dev-kb\"]}], \"AllowFromPublic\": true}]",
+    "Type": "network"
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-OpenSearch/IQSECOpenSearchNetworkPolicy"
+   }
+  },
+  "devOpenSearchIQSECOpenSearchCollectionBFCB354D": {
+   "Type": "AWS::OpenSearchServerless::Collection",
+   "Properties": {
+    "Description": "Vector and Hybrid RAG Search Collection for IQSEC [DEV]",
+    "Name": "iqsec-dev-kb",
+    "Type": "VECTORSEARCH"
+   },
+   "DependsOn": [
+    "devOpenSearchIQSECOpenSearchEncryptionPolicyB04F09E0",
+    "devOpenSearchIQSECOpenSearchNetworkPolicy35A78C9F"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-OpenSearch/IQSECOpenSearchCollection"
+   }
+  },
+  "devOpenSearchIQSECOpenSearchDataAccessPolicy0F6A6DF3": {
+   "Type": "AWS::OpenSearchServerless::AccessPolicy",
+   "Properties": {
+    "Description": "Data access policy for indexing and searching vectors [DEV]",
+    "Name": "iqsec-dev-kb-data-policy",
+    "Policy": {
+     "Fn::Join": [
+      "",
+      [
+       "[{\"Rules\": [{\"ResourceType\": \"collection\", \"Resource\": [\"collection/iqsec-dev-kb\"], \"Permission\": [\"aoss:CreateCollectionItems\", \"aoss:DeleteCollectionItems\", \"aoss:UpdateCollectionItems\", \"aoss:DescribeCollectionItems\"]}, {\"ResourceType\": \"index\", \"Resource\": [\"index/iqsec-dev-kb/*\"], \"Permission\": [\"aoss:CreateIndex\", \"aoss:DeleteIndex\", \"aoss:UpdateIndex\", \"aoss:DescribeIndex\", \"aoss:ReadDocument\", \"aoss:WriteDocument\"]}], \"Principal\": [\"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":iam::251388487610:root\"]}]"
+      ]
+     ]
+    },
+    "Type": "data"
+   },
+   "DependsOn": [
+    "devOpenSearchIQSECOpenSearchCollectionBFCB354D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-OpenSearch/IQSECOpenSearchDataAccessPolicy"
+   }
+  },
+  "devPipelineIQSECStateMachineLogs31C740BF": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 7
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Pipeline/IQSECStateMachineLogs/Resource"
+   }
+  },
+  "devPipelineIQSECProposalStateMachineRole671CD990": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "states.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Pipeline/IQSECProposalStateMachine/Role/Resource"
+   }
+  },
+  "devPipelineIQSECProposalStateMachineRoleDefaultPolicy06C632CD": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:UpdateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:DescribeResourcePolicies",
+        "logs:DescribeLogGroups"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "devPipelineIQSECProposalStateMachineRoleDefaultPolicy06C632CD",
+    "Roles": [
+     {
+      "Ref": "devPipelineIQSECProposalStateMachineRole671CD990"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Pipeline/IQSECProposalStateMachine/Role/DefaultPolicy/Resource"
+   }
+  },
+  "devPipelineIQSECProposalStateMachineD6CA80FE": {
+   "Type": "AWS::StepFunctions::StateMachine",
+   "Properties": {
+    "DefinitionString": "{\"StartAt\":\"1. Register Opportunity & Scopes\",\"States\":{\"1. Register Opportunity & Scopes\":{\"Type\":\"Pass\",\"Comment\":\"Stage 1: Validates Cognito tokens and registers opportunity in RDS\",\"Next\":\"2. Ingest S3 Documents\"},\"2. Ingest S3 Documents\":{\"Type\":\"Pass\",\"Comment\":\"Stage 2: Checks uploaded RFP documents in S3\",\"Next\":\"3. Hybrid OCR & Provenance Chunking\"},\"3. Hybrid OCR & Provenance Chunking\":{\"Type\":\"Pass\",\"Comment\":\"Stage 3: Executes PyMuPDF + PaddleOCR fallback, emitting Doc-Page-Chunk hierarchy\",\"Next\":\"4. Extract Requirements & Addendums\"},\"4. Extract Requirements & Addendums\":{\"Type\":\"Pass\",\"Comment\":\"Stage 4: Extracts discrete requirements and resolves clarification minutes amendments\",\"Next\":\"5. Classify Requirements\"},\"5. Classify Requirements\":{\"Type\":\"Pass\",\"Comment\":\"Stage 5: Categorizes requirements into SOC_CORE, SIEM, EDR, etc.\",\"Next\":\"6. Scoped RAG & Cross-Encoder Reranking\"},\"6. Scoped RAG & Cross-Encoder Reranking\":{\"Type\":\"Pass\",\"Comment\":\"Stage 6: Executes pre-filtered hybrid search on OpenSearch & reranks Top-25 to Top-3\",\"Next\":\"7. Match Product & Service Catalog\"},\"7. Match Product & Service Catalog\":{\"Type\":\"Pass\",\"Comment\":\"Stage 7: Maps requirement to IQSEC solutions and manufacturer directory\",\"Next\":\"8. Private AI Reasoning & Guardrails\"},\"8. Private AI Reasoning & Guardrails\":{\"Type\":\"Pass\",\"Comment\":\"Stage 8: Ollama/vLLM drafts compliance; guardrails flag NOT_ENOUGH_EVIDENCE\",\"Next\":\"9. Human Validation Gate (Approve -- Edit -- Reject)\"},\"9. Human Validation Gate (Approve -- Edit -- Reject)\":{\"Type\":\"Pass\",\"Comment\":\"Stage 9: Pauses state machine until Pre-Sales Analyst approves matrix via UI\",\"Next\":\"10. Commit Validated Sábana Matrix\"},\"10. Commit Validated Sábana Matrix\":{\"Type\":\"Pass\",\"Comment\":\"Stage 10: Commits approved matrix into Amazon RDS PostgreSQL\",\"Next\":\"11. Generate Multi-Deliverables\"},\"11. Generate Multi-Deliverables\":{\"Type\":\"Pass\",\"Comment\":\"Stage 11: Generates XLSX Sábana, DOCX Proposal, and PPTX Presentation\",\"Next\":\"12. Audit Trail & Metrics Telemetry\"},\"12. Audit Trail & Metrics Telemetry\":{\"Type\":\"Pass\",\"Comment\":\"Stage 12: Logs execution metrics to CloudWatch and marks opportunity COMPLETED\",\"End\":true}},\"TimeoutSeconds\":14400}",
+    "LoggingConfiguration": {
+     "Destinations": [
+      {
+       "CloudWatchLogsLogGroup": {
+        "LogGroupArn": {
+         "Fn::GetAtt": [
+          "devPipelineIQSECStateMachineLogs31C740BF",
+          "Arn"
+         ]
+        }
+       }
+      }
+     ],
+     "IncludeExecutionData": true,
+     "Level": "ALL"
+    },
+    "RoleArn": {
+     "Fn::GetAtt": [
+      "devPipelineIQSECProposalStateMachineRole671CD990",
+      "Arn"
+     ]
+    },
+    "StateMachineName": "IQSEC-Dev-AI-Proposal-Workflow"
+   },
+   "DependsOn": [
+    "devPipelineIQSECProposalStateMachineRoleDefaultPolicy06C632CD",
+    "devPipelineIQSECProposalStateMachineRole671CD990"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/dev-Pipeline/IQSECProposalStateMachine/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/8VTS4vbMBD+LZuzom6TQ6E3JylL6GNNvN1LWcpYmTja2FLQjJIG4f9ebDm26baFhUJP88188x5pJmfvbuXtDZxpqraHaalzGTIGdRBwpu/hUJEMH/EiljvTiKTUQI3SglooWxjNVoavhC61tmy4Hl/BstRoeEy9tNw564+1IFQOmSowUKCTIWv1xrFDUTyAK5ATZlD7qsv0e6YWqGYyPB5V4/OYLkXq81KrzOemS9yjjfWMD5CXONgHW0JklQbW1vTODfiwThvxBfgOGM9wEanTJ2AcEq8NozPYO8ROOm00RYbKO82XdhndTH8xrE3hkKgWNJdh4dUhVovoW5hU+oc2k/eT8XWbs9JcthTJ6Jp4tisskfE+f0bFNKnFf4x+EpFKbanVZZgo6q+YKwZkDIzNel/X2D8OfqqF25IMKTiokNH1J10tfrGtgCEHwrUhBqNQxIc0CnhhuLrWwh7REIJTe0J3QlcikQyjlzNsdWnLEtX1PSdKIVFka1HagmT4ZIu+yBXXghiPO2/ayHYiItGO+hnUXpv4eUZ6LTRUMmxs/FetHLroKtZig2S9UyiWnthWg7ozf6BSZ096i24BhCIhQs4YCm2KJube89FzLdIL7615M5dvZ3J+80xaT503rCuUmyh/AhAZNdYFBQAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "IQSEC-Dev-Proposal-Automation-Stack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "EnvironmentStage": {
+   "Description": "Active Deployment Environment Stage (dev/staging/prod)",
+   "Value": "dev"
+  },
+  "CognitoUserPoolId": {
+   "Description": "Amazon Cognito User Pool ID",
+   "Value": {
+    "Ref": "devSecurityIQSECUserPool050DB3BA"
+   }
+  },
+  "CognitoClientId": {
+   "Description": "Amazon Cognito App Client ID",
+   "Value": {
+    "Ref": "devSecurityIQSECUserPoolIQSECWebClientE7FD9829"
+   }
+  },
+  "RFPBucketName": {
+   "Description": "S3 Bucket for Customer RFP Uploads",
+   "Value": {
+    "Ref": "devStorageIQSECRFPBucket88B2B9B6"
+   }
+  },
+  "KnowledgeBucketName": {
+   "Description": "S3 Bucket for IQSEC Knowledge Base",
+   "Value": {
+    "Ref": "devStorageIQSECKnowledgeBucketA3A6C43C"
+   }
+  },
+  "DeliverablesBucketName": {
+   "Description": "S3 Bucket for Generated Deliverables",
+   "Value": {
+    "Ref": "devStorageIQSECDeliverablesBucketE9B8D320"
+   }
+  },
+  "RDSEndpoint": {
+   "Description": "Amazon RDS PostgreSQL Endpoint Address",
+   "Value": {
+    "Fn::GetAtt": [
+     "devDatabaseIQSECRDSPostgresD8144CD6",
+     "Endpoint.Address"
+    ]
+   }
+  },
+  "OpenSearchCollectionId": {
+   "Description": "Amazon OpenSearch Serverless Collection ID",
+   "Value": {
+    "Fn::GetAtt": [
+     "devOpenSearchIQSECOpenSearchCollectionBFCB354D",
+     "Id"
+    ]
+   }
+  },
+  "StepFunctionsArn": {
+   "Description": "AWS Step Functions State Machine ARN",
+   "Value": {
+    "Ref": "devPipelineIQSECProposalStateMachineD6CA80FE"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

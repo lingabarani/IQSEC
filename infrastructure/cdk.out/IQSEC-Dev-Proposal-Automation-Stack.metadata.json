@@ -1,0 +1,1032 @@
+{
+  "/IQSEC-Dev-Proposal-Automation-Stack": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::W3010": "Literal AZs in template are the result of accessing stack.availabilityZones, this is expected and safe"
+      },
+      "trace": [
+        "    ...aws-cdk-lib, jsii runtime...",
+        "    (no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/EnvironmentStage": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "EnvironmentStage"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/CognitoUserPoolId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CognitoUserPoolId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/CognitoClientId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CognitoClientId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/RFPBucketName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RFPBucketName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/KnowledgeBucketName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KnowledgeBucketName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/DeliverablesBucketName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DeliverablesBucketName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/RDSEndpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RDSEndpoint"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/OpenSearchCollectionId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenSearchCollectionId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/StepFunctionsArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "StepFunctionsArn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Security/GroupPreSalesAnalyst": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devSecurityGroupPreSalesAnalyst8FBD8279"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Security/GroupCommercialManager": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devSecurityGroupCommercialManager959CEF51"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Security/GroupSOCArchitect": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devSecurityGroupSOCArchitect4B6127B2"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-OpenSearch/IQSECOpenSearchEncryptionPolicy": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devOpenSearchIQSECOpenSearchEncryptionPolicyB04F09E0"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-OpenSearch/IQSECOpenSearchNetworkPolicy": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devOpenSearchIQSECOpenSearchNetworkPolicy35A78C9F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-OpenSearch/IQSECOpenSearchCollection": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devOpenSearchIQSECOpenSearchCollectionBFCB354D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-OpenSearch/IQSECOpenSearchDataAccessPolicy": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devOpenSearchIQSECOpenSearchDataAccessPolicy0F6A6DF3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECMasterKmsKey/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devSecurityIQSECMasterKmsKey1A6439F8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECUserPool/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devSecurityIQSECUserPool050DB3BA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECDbSecret/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devSecurityIQSECDbSecret7DDBC9B8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpc6A53E85A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/IGW": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcIGW395937D3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/VPCGW": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcVPCGWAF1FE9E7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECAppSecurityGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECAppSecurityGroup19374590"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECDbSecurityGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECDbSecurityGroup075C9C37"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECDbSecurityGroup/from IQSECDevProposalAutomationStackdevNetworkingIQSECAppSecurityGroup4154AD69:5432": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECDbSecurityGroupfromIQSECDevProposalAutomationStackdevNetworkingIQSECAppSecurityGroup4154AD6954328B976920"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECRFPBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devStorageIQSECRFPBucket88B2B9B6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECKnowledgeBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devStorageIQSECKnowledgeBucketA3A6C43C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECDeliverablesBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devStorageIQSECDeliverablesBucketE9B8D320"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Database/IQSECPostgresParams/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devDatabaseIQSECPostgresParams944D8BBD"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Database/IQSECRDSPostgres/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devDatabaseIQSECRDSPostgresD8144CD6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Pipeline/IQSECStateMachineLogs/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devPipelineIQSECStateMachineLogs31C740BF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Pipeline/IQSECProposalStateMachine/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devPipelineIQSECProposalStateMachineD6CA80FE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECMasterKmsKey/Alias/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devSecurityIQSECMasterKmsKeyAlias38ACBC82"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECUserPool/IQSECWebClient/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devSecurityIQSECUserPoolIQSECWebClientE7FD9829"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Security/IQSECDbSecret/Attachment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devSecurityIQSECDbSecretAttachment15F97A25"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPublicSubnet1Subnet29FC7A51"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:270 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPublicSubnet1RouteTable736CB544"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:270 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPublicSubnet1RouteTableAssociationF5CA5FEA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:270 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPublicSubnet1DefaultRoute465724AA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:210 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib, jsii runtime..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/EIP": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPublicSubnet1EIP99CD5498"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet1/NATGateway": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPublicSubnet1NATGatewayE702819B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPublicSubnet2Subnet16A7BDD8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:270 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPublicSubnet2RouteTable57BD1434"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:270 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPublicSubnet2RouteTableAssociation3EA0612A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:270 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PublicSubnet2/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPublicSubnet2DefaultRoute48FB9233"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:210 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib, jsii runtime..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPrivateAppSubnet1Subnet35830517"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:272 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPrivateAppSubnet1RouteTableAF438586"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:272 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPrivateAppSubnet1RouteTableAssociationEFAF1DC7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:272 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet1/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPrivateAppSubnet1DefaultRouteC412BC61"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPrivateAppSubnet2Subnet4C9EE767"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:272 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPrivateAppSubnet2RouteTable0B6CF992"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:272 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPrivateAppSubnet2RouteTableAssociation1AE819ED"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:272 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-PrivateAppSubnet2/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevPrivateAppSubnet2DefaultRouteC68FD0FC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet1SubnetEEB020EE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:274 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet1RouteTable1C1995EA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:274 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet1RouteTableAssociationF2DCC072"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:274 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet2SubnetCA5B740F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:274 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet2RouteTable8F5A56C1"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:274 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Networking/IQSECVpc/dev-IsolatedDatabaseSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devNetworkingIQSECVpcdevIsolatedDatabaseSubnet2RouteTableAssociation357E4856"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        ".../tmp/jsii-kernel-a5o0Gv/node_modules/aws-cdk-lib/aws-ec2/lib/vpc.js:1:274 in aws-cdk-lib...",
+        "Array.forEach (:)",
+        "...aws-cdk-lib..."
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECRFPBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devStorageIQSECRFPBucketPolicy5DCA3F78"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECRFPBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devStorageIQSECRFPBucketAutoDeleteObjectsCustomResource7C5C2B17"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECKnowledgeBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devStorageIQSECKnowledgeBucketPolicyB8C90F80"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECKnowledgeBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devStorageIQSECKnowledgeBucketAutoDeleteObjectsCustomResource9B14D70D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECDeliverablesBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devStorageIQSECDeliverablesBucketPolicyDB14F7C3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Storage/IQSECDeliverablesBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devStorageIQSECDeliverablesBucketAutoDeleteObjectsCustomResource503C0135"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Database/IQSECRDSPostgres/SubnetGroup/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devDatabaseIQSECRDSPostgresSubnetGroup6CE12B1E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Pipeline/IQSECProposalStateMachine/Role/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devPipelineIQSECProposalStateMachineRole671CD990"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, jsii runtime, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/IQSEC-Dev-Proposal-Automation-Stack/dev-Pipeline/IQSECProposalStateMachine/Role/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "devPipelineIQSECProposalStateMachineRoleDefaultPolicy06C632CD"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ]
+}

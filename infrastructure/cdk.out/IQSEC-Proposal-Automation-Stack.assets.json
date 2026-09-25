@@ -1,0 +1,21 @@
+{
+  "version": "54.0.0",
+  "files": {
+    "c0f36f84260b24ba9d8d5c1e8a0d59652f214c6e3124f6395722d381b253fe93": {
+      "displayName": "IQSEC-Proposal-Automation-Stack Template",
+      "source": {
+        "path": "IQSEC-Proposal-Automation-Stack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "251388487610-us-east-1-b2628abe": {
+          "bucketName": "cdk-hnb659fds-assets-251388487610-us-east-1",
+          "objectKey": "c0f36f84260b24ba9d8d5c1e8a0d59652f214c6e3124f6395722d381b253fe93.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::251388487610:role/cdk-hnb659fds-file-publishing-role-251388487610-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
