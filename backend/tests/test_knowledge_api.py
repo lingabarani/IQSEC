@@ -3,35 +3,8 @@ Integration Tests for Knowledge Base API Endpoints
 """
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
-
-from backend.app.db.base import Base
-import backend.app.db.models  # Ensure all models are registered on Base
-from backend.app.db.session import get_db
 from backend.main import app
 
-# Setup test in-memory SQLite engine with StaticPool so memory DB is preserved across connections
-SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool
-)
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base.metadata.create_all(bind=engine)
-
-
-def override_get_db():
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-app.dependency_overrides[get_db] = override_get_db
 client = TestClient(app)
 
 
@@ -63,4 +36,3 @@ def test_list_knowledge_documents_endpoint():
     data = response.json()
     assert isinstance(data, list)
     assert len(data) >= 1
-

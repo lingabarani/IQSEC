@@ -51,3 +51,11 @@ def test_health_check_endpoint():
     assert data["status"] in ["healthy", "degraded"]
     assert "version" in data
     assert "s3_rfp_bucket" in data
+
+
+def test_dashboard_endpoint():
+    response = client.get("/dashboard")
+    assert response.status_code == 200
+    assert "<!DOCTYPE html>" in response.text
+    assert "IQSEC" in response.text
+

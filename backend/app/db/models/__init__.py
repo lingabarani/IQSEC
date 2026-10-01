@@ -15,6 +15,8 @@ from backend.app.db.models.proposal import (
     Proposal,
     ProposalDeliverable,
     DeliverableType,
+    SabanaApprovalStatus,
+    ProposalLifecycleStatus,
 )
 
 __all__ = [
@@ -32,5 +34,6 @@ __all__ = [
     "Proposal",
     "ProposalDeliverable",
     "DeliverableType",
+    "SabanaApprovalStatus",
+    "ProposalLifecycleStatus",
 ]
-

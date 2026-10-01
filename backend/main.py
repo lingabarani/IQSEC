@@ -54,6 +54,15 @@ app.add_middleware(
 # Include API Router
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
+# Mount Frontend Static Assets
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
+if os.path.exists(frontend_dir):
+    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+
 
 @app.get("/")
 def root():
@@ -61,8 +70,19 @@ def root():
         "platform": "IQSEC GenAI Proposal Automation Platform",
         "version": "1.0.0",
         "docs": "/docs",
-        "api": f"{settings.API_V1_STR}/health"
+        "api": f"{settings.API_V1_STR}/health",
+        "dashboard": "/dashboard"
     }
+
+
+@app.get("/dashboard")
+def get_dashboard():
+    """Serves the IQSEC Proposal Automation Web Application"""
+    index_file = os.path.join(frontend_dir, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return {"message": "Frontend dashboard not installed"}
+
 
 
 if __name__ == "__main__":

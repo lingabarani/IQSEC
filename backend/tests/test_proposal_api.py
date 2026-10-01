@@ -3,40 +3,16 @@ Integration Tests for Proposal Generation and Smart Triage Endpoints
 """
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
 
 from backend.main import app
-from backend.app.db.base import Base
-import backend.app.db.models
 from backend.app.db.models.rfp import RFPDocument, DocumentType, ProcessingStatus
 from backend.app.db.models.requirement import RFPRequirement, RequirementType, ComplianceStatus, IQSECPillar
-from backend.app.db.session import get_db
+from backend.tests.conftest import TestingSessionLocal
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool
-)
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base.metadata.create_all(bind=engine)
-
-
-def override_get_db():
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-app.dependency_overrides[get_db] = override_get_db
 client = TestClient(app)
 
 
-@pytest.fixture(scope="module", autouse=True)
+@pytest.fixture(autouse=True)
 def setup_rfp_data():
     db = TestingSessionLocal()
     rfp = db.get(RFPDocument, "rfp_api_test")
@@ -102,4 +78,3 @@ def test_review_and_override_requirement_api():
     assert data["compliance_status"] == "CUMPLE"
     assert data["human_approved"] is True
     assert data["reviewed_by"] == "Senior_SOC_Architect"
-
