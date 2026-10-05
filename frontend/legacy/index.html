@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IQSEC Enterprise Proposal Automation Platform | Multi-Agent Core</title>
+  
+  <!-- Premium Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <!-- Enterprise Header Bar -->
+  <header>
+    <div class="logo-container" onclick="switchTab('tab-ingestion')">
+      <div class="iqsec-badge">
+        <i data-lucide="shield-alert" style="width: 17px; height: 17px;"></i>
+        IQSEC
+      </div>
+      <div>
+        <div class="app-title">
+          Proposal Automation Platform
+        </div>
+        <div class="app-subtitle">Multi-Agent Cognitive Engine &bull; SOC MSSP</div>
+      </div>
+    </div>
+
+    <!-- Navigation Stepper Tabs -->
+    <nav class="nav-tabs" aria-label="Pipeline Navigation">
+      <button class="nav-tab active" onclick="switchTab('tab-ingestion')" id="nav-btn-ingestion">
+        <i data-lucide="upload-cloud"></i> 1. Ingesta & Deltas
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-dashboard')" id="nav-btn-dashboard">
+        <i data-lucide="pie-chart"></i> 2. Dashboard
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-sabana')" id="nav-btn-sabana">
+        <i data-lucide="table"></i> 3. Sábana Matrix
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-signoff')" id="nav-btn-signoff">
+        <i data-lucide="shield-check"></i> 4. Sign-Off (VP)
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-benchmark')" id="nav-btn-benchmark">
+        <i data-lucide="cpu"></i> 5. Benchmark
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-export')" id="nav-btn-export">
+        <i data-lucide="download"></i> 6. Entregables
+      </button>
+    </nav>
+
+    <!-- System Telemetry & Stage Tracker -->
+    <div style="display: flex; align-items: center; gap: 0.85rem;">
+      <div class="status-pill" style="background: rgba(8, 14, 28, 0.85); border: 1px solid var(--border-subtle);">
+        <div class="pulse-dot"></div>
+        <span id="model-indicator" style="color: var(--accent-cyan);">Bedrock Claude 3.5</span>
+      </div>
+      <div class="status-pill badge-stage" id="governance-badge">
+        FASE 1: SÁBANA PENDIENTE
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace Content -->
+  <main>
+
+    <!-- ==================== TAB 1: INGESTION & DELTA HUB ==================== -->
+    <section id="tab-ingestion" class="tab-content active">
+      <div style="margin-bottom: 1.75rem;">
+        <div style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem;">
+          STAGE 01 // TENDER INGESTION & CLAUSE DELTA RECONCILIATION
+        </div>
+        <h1 style="font-size: 1.65rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: #fff;">
+          Ingesta de Licitación & Conciliación de Aclaraciones
+        </h1>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; max-width: 860px;">
+          Carga las Bases Técnicas originales del cliente (RFP) y los Addendums (Juntas de Aclaraciones) para la reconciliación automatizada de cláusulas, extracción de tablas y clasificación por pilar de ciberseguridad.
+        </p>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <!-- Card 1: RFP Upload Receptors -->
+        <div class="glass-panel">
+          <div class="card-header">
+            <span class="card-title">
+              <i data-lucide="file-text" style="color: var(--accent-cyan);"></i>
+              1. Bases de Licitación (RFP Original)
+            </span>
+            <span class="status-pill badge-stage" id="rfp-status-pill">Listo para Ingesta</span>
+          </div>
+          <div class="card-body">
+            <div class="dropzone" id="rfp-dropzone" onclick="triggerFileInput('rfp-file-input')">
+              <i data-lucide="file-up" class="dropzone-icon"></i>
+              <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; color: #fff;">Arrastra el PDF de las Bases aquí</h4>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.15rem;">Formatos soportados: PDF digital o escaneado (OCR Híbrido PyMuPDF / Tesseract)</p>
+              <button class="btn btn-secondary" type="button">
+                <i data-lucide="folder-open"></i> Seleccionar Archivo
+              </button>
+              <input type="file" id="rfp-file-input" accept=".pdf" style="display:none;" onchange="handleRFPFileSelected(this)">
+            </div>
+            
+            <div id="rfp-selected-info" style="display:none; margin-top: 1rem; padding: 0.85rem 1rem; background: rgba(0, 212, 255, 0.08); border: 1px solid rgba(0, 212, 255, 0.25); border-radius: 9px;">
+              <div style="font-weight: 700; color: #fff; font-size: 0.88rem;" id="rfp-file-name">01_Clean_Digital_Tender_CFE_Ciberseguridad.pdf</div>
+              <div style="font-size: 0.78rem; color: var(--accent-cyan); font-family: var(--font-mono); margin-top: 0.2rem;" id="rfp-file-meta">3 páginas &bull; 12 Requerimientos identificados</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Addendum Upload Receptors -->
+        <div class="glass-panel">
+          <div class="card-header">
+            <span class="card-title">
+              <i data-lucide="git-merge" style="color: #a78bfa;"></i>
+              2. Junta de Aclaraciones (Addendum Delta)
+            </span>
+            <span class="status-pill badge-stage" id="addendum-status-pill">Opcional / Recomendado</span>
+          </div>
+          <div class="card-body">
+            <div class="dropzone" id="addendum-dropzone" onclick="triggerFileInput('addendum-file-input')">
+              <i data-lucide="file-diff" class="dropzone-icon" style="color: #a78bfa;"></i>
+              <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; color: #fff;">Arrastra el Acta de Aclaraciones</h4>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.15rem;">Extrae Preguntas/Respuestas y aplica sobreescrituras en tiempo real</p>
+              <button class="btn btn-secondary" type="button">
+                <i data-lucide="folder-open"></i> Seleccionar Acta
+              </button>
+              <input type="file" id="addendum-file-input" accept=".pdf" style="display:none;" onchange="handleAddendumFileSelected(this)">
+            </div>
+            
+            <div id="addendum-selected-info" style="display:none; margin-top: 1rem; padding: 0.85rem 1rem; background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.25); border-radius: 9px;">
+              <div style="font-weight: 700; color: #fff; font-size: 0.88rem;" id="addendum-file-name">03_Junta_de_Aclaraciones_CFE_2026.pdf</div>
+              <div style="font-size: 0.78rem; color: #c4b5fd; font-family: var(--font-mono); margin-top: 0.2rem;" id="addendum-file-meta">4 Preguntas procesadas &bull; 2 Cláusulas modificadas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Configuration Command Bar -->
+      <div class="glass-panel" style="padding: 1.25rem 1.75rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem;">
+        <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+          <div>
+            <label style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">ID de Cliente / Tenant</label>
+            <input type="text" id="customer-id-input" class="glass-input" value="CFE_ENERGIA_NACIONAL" style="width: 230px; font-family: var(--font-mono);">
+          </div>
+          <div>
+            <label style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">Título de Propuesta</label>
+            <input type="text" id="proposal-title-input" class="glass-input" value="Servicio Administrado de SOC & SIEM 24/7" style="width: 360px;">
+          </div>
+        </div>
+        <button class="btn btn-primary" id="btn-run-orchestrator" onclick="runAgentCoreOrchestration()" style="padding: 0.8rem 1.75rem; font-size: 0.92rem;">
+          <i data-lucide="play-circle"></i> Ejecutar Equipo Multi-Agent (AgentCore)
+        </button>
+      </div>
+
+      <!-- Live Addendum Delta Reconciliation Matrix -->
+      <div class="glass-panel" id="delta-banner">
+        <div class="card-header" style="background: rgba(139, 92, 246, 0.08);">
+          <span class="card-title">
+            <i data-lucide="git-pull-request" style="color: #a78bfa;"></i>
+            Impacto de la Junta de Aclaraciones (Delta Overrides Activos)
+          </span>
+          <span class="status-pill aclaracion">2 Modificaciones Detectadas</span>
+        </div>
+        <div class="card-body" style="padding: 1.25rem 1.5rem;">
+          <div class="table-container">
+            <table class="sabana-table">
+              <thead>
+                <tr>
+                  <th style="width: 140px;">Código Cláusula</th>
+                  <th style="width: 280px;">Texto Original (Bases RFP)</th>
+                  <th style="width: 320px;">Pregunta / Aclaración (Addendum)</th>
+                  <th>Texto Efectivo Conciliado (Regla Vigente)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-family: var(--font-mono); color: var(--accent-cyan); font-weight: 700;">REQ-TECH-002</td>
+                  <td><span class="diff-del">SLA de Respuesta a Incidentes Críticos de 15 minutos</span></td>
+                  <td style="color: var(--text-secondary); font-size: 0.82rem;"><strong>Pregunta 14:</strong> Se solicita ampliar a 30 min por enlaces satelitales.<br><strong style="color: #6ee7b7;">Respuesta CFE:</strong> Se acepta.</td>
+                  <td><span class="diff-add">SLA de Respuesta a Incidentes Críticos ampliado a 30 minutos</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family: var(--font-mono); color: var(--accent-cyan); font-weight: 700;">REQ-TECH-006</td>
+                  <td><span class="diff-del">Certificación ISO 27001 y CMMI Nivel 5 obligatoria</span></td>
+                  <td style="color: var(--text-secondary); font-size: 0.82rem;"><strong>Pregunta 22:</strong> ¿Se acepta CMMI-DEV Nivel 3 vigente?<br><strong style="color: #6ee7b7;">Respuesta CFE:</strong> Se acepta CMMI Nivel 3 o superior.</td>
+                  <td><span class="diff-add">Certificación ISO 27001 y CMMI Nivel 3 o superior</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: EXECUTIVE DASHBOARD ==================== -->
+    <section id="tab-dashboard" class="tab-content">
+      <div style="margin-bottom: 1.75rem;">
+        <div style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem;">
+          STAGE 02 // TECHNICAL COMPLIANCE & AUDIT OVERVIEW
+        </div>
+        <h2 style="font-size: 1.65rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: #fff;">
+          Resumen Ejecutivo de Cumplimiento Técnico
+        </h2>
+        <p style="color: var(--text-secondary); font-size: 0.88rem;">
+          Métricas consolidadas de la propuesta técnica auditadas por el equipo autónomo de IA y catalogadas según los pilares de servicio de IQSEC.
+        </p>
+      </div>
+
+      <!-- High-Impact KPI Metrics Cards -->
+      <div class="grid-4" style="margin-bottom: 1.75rem;">
+        <div class="glass-panel" style="padding: 1.35rem 1.5rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;">Total Requerimientos</span>
+            <i data-lucide="layers" style="width: 18px; height: 18px; color: var(--accent-cyan); opacity: 0.8;"></i>
+          </div>
+          <div style="font-size: 2.25rem; font-weight: 800; font-family: var(--font-mono); color: #fff; line-height: 1.1;" id="metric-total-reqs">12</div>
+          <div style="font-size: 0.75rem; color: var(--accent-cyan); margin-top: 0.45rem; display: flex; align-items: center; gap: 0.35rem;">
+            <i data-lucide="check-circle" style="width: 13px; height: 13px;"></i> 100% de pliego auditado
+          </div>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.35rem 1.5rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;">Tasa de Cumplimiento</span>
+            <i data-lucide="shield-check" style="width: 18px; height: 18px; color: var(--color-cumple); opacity: 0.8;"></i>
+          </div>
+          <div style="font-size: 2.25rem; font-weight: 800; font-family: var(--font-mono); color: var(--color-cumple); line-height: 1.1;" id="metric-compliance-rate">91.7%</div>
+          <div style="font-size: 0.75rem; color: #6ee7b7; margin-top: 0.45rem;">
+            11 Cumplen &bull; 1 Excepción técnica
+          </div>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.35rem 1.5rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;">Cobertura de Citación</span>
+            <i data-lucide="book-open-check" style="width: 18px; height: 18px; color: var(--accent-cyan); opacity: 0.8;"></i>
+          </div>
+          <div style="font-size: 2.25rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent-cyan); line-height: 1.1;" id="metric-citation-rate">100%</div>
+          <div style="font-size: 0.75rem; color: var(--accent-cyan); margin-top: 0.45rem;">
+            0 Alucinaciones (Grounded RAG)
+          </div>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.35rem 1.5rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;">Aceleración Operativa</span>
+            <i data-lucide="zap" style="width: 18px; height: 18px; color: #a78bfa; opacity: 0.8;"></i>
+          </div>
+          <div style="font-size: 2.25rem; font-weight: 800; font-family: var(--font-mono); color: #c4b5fd; line-height: 1.1;">16.4x</div>
+          <div style="font-size: 0.75rem; color: #c4b5fd; margin-top: 0.45rem;">
+            De 4 días laborales a 4.2 min
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <div class="glass-panel">
+          <div class="card-header">
+            <span class="card-title">
+              <i data-lucide="pie-chart" style="color: var(--accent-cyan);"></i>
+              Distribución de Cumplimiento (Sábana de Requerimientos)
+            </span>
+          </div>
+          <div class="card-body" style="height: 300px; display: flex; align-items: center; justify-content: center;">
+            <canvas id="complianceDonutChart"></canvas>
+          </div>
+        </div>
+
+        <div class="glass-panel">
+          <div class="card-header">
+            <span class="card-title">
+              <i data-lucide="activity" style="color: var(--accent-cyan);"></i>
+              Cumplimiento por Pilar Tecnológico IQSEC
+            </span>
+          </div>
+          <div class="card-body" style="height: 300px; display: flex; align-items: center; justify-content: center;">
+            <canvas id="pillarBarChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: SMART TRIAGE SÁBANA REVIEWER ==================== -->
+    <section id="tab-sabana" class="tab-content">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem;">
+        <div>
+          <div style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem;">
+            STAGE 03 // PRESALES CLAUSE-LEVEL TRIAGE & EVIDENCE VERIFICATION
+          </div>
+          <h2 style="font-size: 1.65rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: #fff;">
+            Revisión de Matriz de Cumplimiento (Sábana Técnica)
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 0.88rem;">
+            Fase 1: Validación Humana por el Ingeniero de Preventa. Cada respuesta cuenta con citas exactas a nivel de página del catálogo IQSEC.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button class="btn btn-secondary" onclick="batchApproveHighConfidence()">
+            <i data-lucide="check-check"></i> Aprobar Lote (&ge;95% Confianza)
+          </button>
+          <button class="btn btn-success" onclick="openHuman1Modal()">
+            <i data-lucide="award"></i> Humano 1: Firma y Aprobación de Sábana
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters & High-Density Search Bar -->
+      <div class="glass-panel" style="padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 280px; display: flex; align-items: center; gap: 0.6rem;" class="glass-input">
+          <i data-lucide="search" style="color: var(--text-muted); width: 17px; height: 17px;"></i>
+          <input type="text" id="sabana-search" placeholder="Buscar por código de cláusula, palabra clave, SLA o pilar..." style="background: transparent; border: none; color: #fff; width: 100%; outline: none;" oninput="filterSabanaTable()">
+        </div>
+        <select class="glass-input" id="filter-pillar" onchange="filterSabanaTable()" style="min-width: 200px;">
+          <option value="ALL">Todos los Pilares</option>
+          <option value="SOC_SIEM">SOC & SIEM</option>
+          <option value="THREAT_INTEL">Threat Intelligence</option>
+          <option value="CLOUD_SECURITY">Cloud Security</option>
+          <option value="INCIDENT_RESPONSE">Respuesta a Incidentes</option>
+          <option value="GOVERNANCE_RISK_COMPLIANCE">GRC & Auditoría</option>
+        </select>
+        <select class="glass-input" id="filter-status" onchange="filterSabanaTable()" style="min-width: 200px;">
+          <option value="ALL">Todos los Estados</option>
+          <option value="CUMPLE">Cumple</option>
+          <option value="CUMPLE_CON_EXCEPCION">Cumple con Excepción</option>
+          <option value="NO_CUMPLE">No Cumple</option>
+          <option value="REQUIERE_ACLARACION">Requiere Aclaración</option>
+        </select>
+      </div>
+
+      <!-- Sábana Data Grid -->
+      <div class="glass-panel" style="overflow: hidden;">
+        <div class="table-container" style="max-height: 560px;">
+          <table class="sabana-table" id="sabana-matrix-table">
+            <thead>
+              <tr>
+                <th style="width: 65px; text-align: center;">Pág</th>
+                <th style="width: 130px;">Código</th>
+                <th style="width: 150px;">Pilar IQSEC</th>
+                <th style="width: 320px;">Requerimiento Efectivo (RFP + Addendum)</th>
+                <th style="width: 140px;">Estado</th>
+                <th style="width: 105px;">Confianza</th>
+                <th>Respuesta Técnica & Evidencia Citada</th>
+                <th style="width: 80px; text-align: center;">Revisar</th>
+              </tr>
+            </thead>
+            <tbody id="sabana-table-body">
+              <!-- Dynamically populated via app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: HUMANO 2 SIGN-OFF ==================== -->
+    <section id="tab-signoff" class="tab-content">
+      <div style="margin-bottom: 1.75rem;">
+        <div style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem;">
+          STAGE 04 // EXECUTIVE BID DIRECTOR RELEASE & DIGITAL SIGN-OFF
+        </div>
+        <h2 style="font-size: 1.65rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: #fff;">
+          Fase 2: Dictamen Ejecutivo y Liberación de Propuesta
+        </h2>
+        <p style="color: var(--text-secondary); font-size: 0.88rem;">
+          Validación formal por el Director de Propuestas / VP. Requiere que la Fase 1 (Sábana de Preventa) haya sido debidamente aprobada.
+        </p>
+      </div>
+
+      <!-- Governance Stepper -->
+      <div class="glass-panel" style="padding: 1.5rem 2rem; margin-bottom: 1.75rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; position: relative;">
+          <!-- Step 1 -->
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div id="step1-circle" style="width: 42px; height: 42px; border-radius: 50%; background: var(--color-cumple); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);">
+              <i data-lucide="check" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div>
+              <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">Fase 1: Validación Sábana</div>
+              <div style="font-size: 0.78rem; color: var(--text-secondary); font-family: var(--font-mono);" id="step1-meta">Validado por Ing. Preventa Senior</div>
+            </div>
+          </div>
+
+          <div style="flex: 1; height: 2px; background: rgba(56, 189, 248, 0.25); margin: 0 2rem;"></div>
+
+          <!-- Step 2 -->
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div id="step2-circle" style="width: 42px; height: 42px; border-radius: 50%; background: rgba(0, 212, 255, 0.15); border: 2px solid var(--accent-cyan); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-weight: 800;">
+              2
+            </div>
+            <div>
+              <div style="font-weight: 700; font-size: 0.95rem; color: #fff;">Fase 2: Liberación Ejecutiva</div>
+              <div style="font-size: 0.78rem; color: var(--accent-cyan); font-family: var(--font-mono);" id="step2-meta">Pendiente de Firma Digital</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Proposal Executive Summary Preview -->
+        <div class="glass-panel">
+          <div class="card-header">
+            <span class="card-title">
+              <i data-lucide="file-check" style="color: var(--accent-cyan);"></i>
+              Vista Previa del Dictamen Técnico Institucional
+            </span>
+          </div>
+          <div class="card-body" style="font-size: 0.875rem; line-height: 1.65; color: var(--text-primary); max-height: 440px; overflow-y: auto;">
+            <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem; font-size: 0.95rem;">1. Resumen Ejecutivo de la Oferta</h4>
+            <p style="margin-bottom: 1.15rem; color: var(--text-secondary);">
+              IQSEC S.A. de C.V. presenta formalmente su propuesta para el <strong style="color: #fff;">Servicio Administrado de Centro de Operaciones de Seguridad (SOC) y SIEM de Próxima Generación</strong>. La solución integra analistas Tier-1 a Tier-3 24/7/365, orquestación automatizada SOAR, e inteligencia de amenazas propietaria de IQSEC.
+            </p>
+            <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem; font-size: 0.95rem;">2. Arquitectura del Servicio & SLAs</h4>
+            <p style="margin-bottom: 1.15rem; color: var(--text-secondary);">
+              Se garantiza un tiempo de respuesta a incidentes críticos menor o igual a <strong style="color: #6ee7b7;">30 minutos</strong> (según Addendum Delta), respaldado por una disponibilidad de plataforma de <strong style="color: #fff;">99.95%</strong> y almacenamiento de logs en frío por 12 meses cumpliendo con CNBV y CFE.
+            </p>
+            <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem; font-size: 0.95rem;">3. Matriz de Cumplimiento Certificada</h4>
+            <p style="color: var(--text-muted); font-size: 0.8rem; font-family: var(--font-mono);">
+              Total de cláusulas evaluadas: 12 &bull; Cumplimiento normativo: 91.7% &bull; Modelo de IA: Amazon Bedrock Claude 3.5 Sonnet con Scoped RAG & Cross-Encoder.
+            </p>
+          </div>
+        </div>
+
+        <!-- Human 2 Sign-Off Form -->
+        <div class="glass-panel">
+          <div class="card-header">
+            <span class="card-title">
+              <i data-lucide="pen-tool" style="color: #a78bfa;"></i>
+              Certificado de Firma Digital y Autorización
+            </span>
+          </div>
+          <div class="card-body">
+            <div style="margin-bottom: 1.15rem;">
+              <label style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">Nombre y Cargo del Director de Propuestas</label>
+              <input type="text" id="human2-name" class="glass-input" style="width: 100%;" value="Alejandro Vergara - Director de Inteligencia Artificial">
+            </div>
+
+            <div style="margin-bottom: 1.15rem;">
+              <label style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">Declaración Jurada de Revisión</label>
+              <textarea id="human2-statement" class="glass-input" rows="3" style="width: 100%; resize: vertical;">Certifico la revisión técnica, económica y regulatoria de la presente propuesta para entrega formal al cliente.</textarea>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+              <label style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">Notas de Autorización Comercial (Opcional)</label>
+              <input type="text" id="human2-notes" class="glass-input" style="width: 100%;" placeholder="Ej: Precios aprobados según tabulador preferente 2026.">
+            </div>
+
+            <button class="btn btn-primary" onclick="submitHuman2Signoff()" style="width: 100%; padding: 0.85rem;">
+              <i data-lucide="shield-check"></i> Firmar y Autorizar Liberación de Propuesta
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: MODEL BENCHMARK ==================== -->
+    <section id="tab-benchmark" class="tab-content">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem;">
+        <div>
+          <div style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem;">
+            STAGE 05 // MODEL ABSTRACTION & COMPARATIVE BENCHMARK
+          </div>
+          <h2 style="font-size: 1.65rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: #fff;">
+            Comparativa Head-to-Head de Modelos GenAI
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 0.88rem;">
+            Evaluación empírica de fundamentación, latencia y costo entre <strong>AWS Bedrock (Claude 3.5 Sonnet)</strong> y <strong>Self-Hosted vLLM (Qwen 27B / 14B)</strong>.
+          </p>
+        </div>
+        <button class="btn btn-primary" onclick="runLiveBenchmark()">
+          <i data-lucide="refresh-cw"></i> Re-ejecutar Benchmark Head-to-Head
+        </button>
+      </div>
+
+      <!-- Comparative Side-by-Side Cards -->
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <!-- Card AWS Bedrock -->
+        <div class="benchmark-card winner">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.15rem;">
+            <div>
+              <span class="status-pill badge-stage">AWS Bedrock Cloud</span>
+              <h3 style="font-size: 1.25rem; font-weight: 800; margin-top: 0.4rem; color: #fff;">Anthropic Claude 3.5 Sonnet</h3>
+            </div>
+            <div style="text-align: right;">
+              <span class="status-pill cumple"><i data-lucide="check"></i> Ganador Calidad</span>
+            </div>
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem; margin-bottom: 1.15rem;">
+            <div style="background: rgba(0,0,0,0.3); padding: 0.85rem; border-radius: 9px; border: 1px solid rgba(255,255,255,0.04);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Fundamentación (Grounded)</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--color-cumple); font-family: var(--font-mono);">98.5%</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 0.85rem; border-radius: 9px; border: 1px solid rgba(255,255,255,0.04);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Latencia TTFT (P95)</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #fff; font-family: var(--font-mono);">1,120 ms</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 0.85rem; border-radius: 9px; border: 1px solid rgba(255,255,255,0.04);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Zero-Hallucination Rate</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--color-cumple); font-family: var(--font-mono);">100%</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 0.85rem; border-radius: 9px; border: 1px solid rgba(255,255,255,0.04);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Costo por 100 Páginas</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent-cyan); font-family: var(--font-mono);">$0.42 USD</div>
+            </div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+            Recomendado para: Licitaciones críticas bancarias y gubernamentales con cero tolerancia a error normativo.
+          </div>
+        </div>
+
+        <!-- Card Self-Hosted Qwen -->
+        <div class="benchmark-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.15rem;">
+            <div>
+              <span class="status-pill aclaracion">On-Premise / Self-Hosted</span>
+              <h3 style="font-size: 1.25rem; font-weight: 800; margin-top: 0.4rem; color: #fff;">Qwen-2.5 27B / 14B (vLLM)</h3>
+            </div>
+            <div style="text-align: right;">
+              <span class="status-pill cumple"><i data-lucide="zap"></i> Ganador Costo ($0)</span>
+            </div>
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem; margin-bottom: 1.15rem;">
+            <div style="background: rgba(0,0,0,0.3); padding: 0.85rem; border-radius: 9px; border: 1px solid rgba(255,255,255,0.04);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Fundamentación (Grounded)</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #fbbf24; font-family: var(--font-mono);">94.2%</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 0.85rem; border-radius: 9px; border: 1px solid rgba(255,255,255,0.04);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Latencia TTFT (P95)</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #fff; font-family: var(--font-mono);">480 ms</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 0.85rem; border-radius: 9px; border: 1px solid rgba(255,255,255,0.04);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Zero-Hallucination Rate</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--color-cumple); font-family: var(--font-mono);">97.5%</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); padding: 0.85rem; border-radius: 9px; border: 1px solid rgba(255,255,255,0.04);">
+              <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase;">Costo por 100 Páginas</div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--color-cumple); font-family: var(--font-mono);">$0.00 USD</div>
+            </div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+            Recomendado para: Triage masivo de documentos preliminares y clientes con soberanía de datos estricta.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 6: 1-CLICK EXPORT CENTER ==================== -->
+    <section id="tab-export" class="tab-content">
+      <div style="margin-bottom: 1.75rem;">
+        <div style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.25rem;">
+          STAGE 06 // DELIVERABLE ARTIFACT CENTER
+        </div>
+        <h2 style="font-size: 1.65rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.4rem; color: #fff;">
+          Centro de Generación y Descarga de Entregables
+        </h2>
+        <p style="color: var(--text-secondary); font-size: 0.88rem;">
+          Exporta los entregables oficiales en los formatos de especificación estándar para licitaciones públicas y privadas mexicanas.
+        </p>
+      </div>
+
+      <div class="grid-4" style="margin-bottom: 1.5rem;">
+        <!-- Deliverable 1: Excel Sábana -->
+        <div class="glass-panel" style="padding: 1.6rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.15rem; color: var(--color-cumple);">
+              <i data-lucide="sheet" style="width: 26px; height: 26px;"></i>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.35rem; color: #fff;">Matriz Sábana</h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.5;">
+              Hoja de cálculo formateada con colores de cumplimiento, filtros automáticos y trazabilidad celda a página.
+            </p>
+          </div>
+          <a class="btn btn-primary" id="btn-export-xlsx" href="/api/v1/export/sabana/prop_gov_test.xlsx" download style="width: 100%;">
+            <i data-lucide="download"></i> Descargar .XLSX
+          </a>
+        </div>
+
+        <!-- Deliverable 2: Word Technical Proposal -->
+        <div class="glass-panel" style="padding: 1.6rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(0, 212, 255, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.15rem; color: var(--accent-cyan);">
+              <i data-lucide="file-text" style="width: 26px; height: 26px;"></i>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.35rem; color: #fff;">Propuesta Técnica</h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.5;">
+              Documento Word formal con portada institucional IQSEC, tabla de contenido, SLAs y narrativa técnica.
+            </p>
+          </div>
+          <a class="btn btn-primary" id="btn-export-docx" href="/api/v1/export/technical-proposal/prop_gov_test.docx" download style="width: 100%;">
+            <i data-lucide="download"></i> Descargar .DOCX
+          </a>
+        </div>
+
+        <!-- Deliverable 3: Executive Presentation PPTX -->
+        <div class="glass-panel" style="padding: 1.6rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.15rem; color: var(--color-excepcion);">
+              <i data-lucide="presentation" style="width: 26px; height: 26px;"></i>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.35rem; color: #fff;">Deck Ejecutivo</h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.5;">
+              Presentación PowerPoint en formato 16:9 con paleta institucional Dark Navy y Cyan para comité directivo.
+            </p>
+          </div>
+          <a class="btn btn-primary" id="btn-export-pptx" href="/api/v1/export/executive-presentation/prop_gov_test.pptx" download style="width: 100%;">
+            <i data-lucide="download"></i> Descargar .PPTX
+          </a>
+        </div>
+
+        <!-- Deliverable 4: Complete Bundle ZIP -->
+        <div class="glass-panel" style="padding: 1.6rem; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(139, 92, 246, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.15rem; color: #a78bfa;">
+              <i data-lucide="archive" style="width: 26px; height: 26px;"></i>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.35rem; color: #fff;">Paquete de Entrega</h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.5;">
+              Archivo comprimido con todos los documentos, matriz Sábana y pista de auditoría de gobernanza.
+            </p>
+          </div>
+          <a class="btn btn-success" id="btn-export-zip" href="/api/v1/export/bundle/prop_gov_test.zip" download style="width: 100%;">
+            <i data-lucide="download"></i> Descargar .ZIP
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== EVIDENCE DRAWER MODAL ==================== -->
+  <div class="drawer-backdrop" id="evidence-drawer" onclick="closeEvidenceDrawer(event)">
+    <div class="drawer-content" onclick="event.stopPropagation()">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <div>
+          <span class="status-pill badge-stage" id="drawer-req-code">REQ-TECH-001</span>
+          <h3 style="font-size: 1.25rem; font-weight: 800; margin-top: 0.35rem; color: #fff;" id="drawer-req-title">Monitoreo SOC 24/7/365</h3>
+        </div>
+        <button class="btn btn-secondary" onclick="closeEvidenceDrawerDirect()" style="padding: 0.4rem 0.6rem;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Effective Requirement Text -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 0.4rem;">Texto del Requerimiento en Pliego</label>
+        <div id="drawer-effective-text" style="background: rgba(0,0,0,0.35); padding: 0.95rem 1.15rem; border-radius: 9px; font-size: 0.86rem; border-left: 3px solid var(--accent-cyan); color: #fff; line-height: 1.5;">
+          El proveedor deberá proveer un servicio de Centro de Operaciones de Seguridad (SOC) con operación 24/7/365.
+        </div>
+      </div>
+
+      <!-- IQSEC Knowledge Citations -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 0.4rem;">Citas de Evidencia en Catálogo IQSEC</label>
+        <div id="drawer-citations-container" style="display: flex; flex-direction: column; gap: 0.85rem;">
+          <!-- Populated dynamically via app.js -->
+        </div>
+      </div>
+
+      <!-- Human Engineer Review & Override Form -->
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 1.5rem; margin-top: 1.75rem;">
+        <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.85rem; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.45rem;">
+          <i data-lucide="edit-3" style="width: 16px; height: 16px;"></i> Ajuste / Validación del Ingeniero de Preventa
+        </h4>
+
+        <div style="margin-bottom: 0.85rem;">
+          <label style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; display: block; margin-bottom: 0.35rem;">Estado de Cumplimiento</label>
+          <select id="drawer-edit-status" class="glass-input" style="width: 100%;">
+            <option value="CUMPLE">CUMPLE</option>
+            <option value="CUMPLE_CON_EXCEPCION">CUMPLE CON EXCEPCIÓN</option>
+            <option value="NO_CUMPLE">NO CUMPLE</option>
+            <option value="REQUIERE_ACLARACION">REQUIERE ACLARACIÓN</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 0.85rem;">
+          <label style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; display: block; margin-bottom: 0.35rem;">Redacción Técnica de la Respuesta</label>
+          <textarea id="drawer-edit-response" class="glass-input" rows="4" style="width: 100%; resize: vertical;"></textarea>
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; display: block; margin-bottom: 0.35rem;">Nombre del Revisor</label>
+          <input type="text" id="drawer-edit-reviewer" class="glass-input" value="Ingeniero_Preventa_Senior" style="width: 100%;">
+        </div>
+
+        <button class="btn btn-primary" onclick="saveRequirementReview()" style="width: 100%; padding: 0.85rem;">
+          <i data-lucide="save"></i> Guardar y Validar Cláusula
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HUMANO 1 SÁBANA APPROVAL MODAL ==================== -->
+  <div class="modal-overlay" id="human1-modal">
+    <div class="modal-box">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="award" style="color: var(--color-cumple);"></i> Dictamen de Fase 1: Aprobación de Sábana
+        </h3>
+        <button class="btn btn-secondary" onclick="closeHuman1Modal()" style="padding: 0.35rem 0.5rem;"><i data-lucide="x"></i></button>
+      </div>
+
+      <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1.35rem; line-height: 1.5;">
+        Al firmar la Sábana Técnica, certificas que todas las cláusulas han sido revisadas, los SLAs y excepciones han sido confirmados, y la matriz está lista para la integración en la propuesta formal.
+      </p>
+
+      <div style="margin-bottom: 1rem;">
+        <label style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">Nombre del Ingeniero de Preventa</label>
+        <input type="text" id="modal-human1-name" class="glass-input" style="width: 100%;" value="Ingeniero Preventa Senior - SOC IQSEC">
+      </div>
+
+      <div style="margin-bottom: 1.5rem;">
+        <label style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">Observaciones de Preventa (Opcional)</label>
+        <textarea id="modal-human1-notes" class="glass-input" rows="3" style="width: 100%;" placeholder="Ej: Cumplimiento validado con los arquitectos de SIEM y Threat Intel."></textarea>
+      </div>
+
+      <button class="btn btn-success" onclick="submitHuman1Approval()" style="width: 100%; padding: 0.85rem;">
+        <i data-lucide="check-circle-2"></i> Confirmar y Firmar Fase 1 (Sábana Aprobada)
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="iqsec-toast-container" id="toast-container"></div>
+
+  <!-- Application Logic -->
+  <script src="/static/app.js"></script>
+</body>
+</html>

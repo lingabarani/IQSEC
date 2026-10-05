@@ -4,11 +4,12 @@ Implements Humano 1 (Sábana Approval) and Humano 2 (Final Proposal Sign-Off).
 """
 from datetime import datetime
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, Body
+from fastapi import APIRouter, Depends, HTTPException, Body, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from pydantic import BaseModel, Field
 
+from backend.app.core.config import settings
 from backend.app.db.session import get_db
 from backend.app.db.models.rfp import RFPDocument
 from backend.app.db.models.proposal import (
@@ -65,6 +66,129 @@ class GovernanceAuditTrailResponse(BaseModel):
     final_signoff_by: Optional[str] = None
     final_signoff_at: Optional[datetime] = None
     final_signoff_notes: Optional[str] = None
+
+
+@router.get("")
+def list_proposals(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    """Lists all proposal dockets with metadata and compliance summaries"""
+    proposals = db.execute(select(Proposal).order_by(Proposal.created_at.desc()).offset(skip).limit(limit)).scalars().all()
+    res = []
+    for p in proposals:
+        rfp = db.get(RFPDocument, p.rfp_id)
+        res.append({
+            "id": p.id,
+            "rfp_id": p.rfp_id,
+            "title": p.title,
+            "tender_number": rfp.tender_number if rfp else "N/A",
+            "customer_id": rfp.customer_id if rfp else "DEFAULT_CUSTOMER",
+            "status": p.status,
+            "version": p.version,
+            "total_requirements": p.total_requirements,
+            "compliant_count": p.compliant_count,
+            "exception_count": p.exception_count,
+            "non_compliant_count": p.non_compliant_count,
+            "overall_compliance_rate": p.overall_compliance_rate,
+            "sabana_status": p.sabana_status,
+            "lifecycle_status": p.lifecycle_status,
+            "created_at": p.created_at
+        })
+    return res
+
+
+class ProposalCreateRequest(BaseModel):
+    title: str = Field(..., description="Title of the proposal")
+    tender_number: str = Field(..., description="Tender or reference number")
+    customer_id: str = Field("DEFAULT_CUSTOMER", description="Customer / Client organization")
+    presales_lead: Optional[str] = Field(None, description="Assigned presales lead")
+    rfp_id: Optional[str] = Field(None, description="Existing RFP ID if already uploaded")
+
+
+@router.post("/create")
+def create_proposal_docket(
+    payload: ProposalCreateRequest,
+    db: Session = Depends(get_db)
+):
+    """Creates a new proposal docket record linked to an RFP or creates a placeholder RFP"""
+    import uuid
+    rfp_id = payload.rfp_id
+    if not rfp_id:
+        rfp_id = f"rfp_{uuid.uuid4().hex[:12]}"
+        rfp = RFPDocument(
+            id=rfp_id,
+            customer_id=payload.customer_id,
+            tender_number=payload.tender_number,
+            title=payload.title,
+            filename="Tender_Docket.pdf",
+            s3_bucket=settings.RFP_BUCKET_NAME,
+            s3_key=f"rfps/{payload.customer_id}/{rfp_id}/Tender_Docket.pdf"
+        )
+        db.add(rfp)
+        db.commit()
+    
+    prop_id = f"prop_{uuid.uuid4().hex[:12]}"
+    proposal = Proposal(
+        id=prop_id,
+        rfp_id=rfp_id,
+        title=payload.title,
+        version=1,
+        status="DRAFT",
+        total_requirements=0,
+        compliant_count=0,
+        exception_count=0,
+        non_compliant_count=0,
+        overall_compliance_rate=0.0,
+        model_provider_used="SELF_HOSTED_QWEN",
+        sabana_status=SabanaApprovalStatus.PENDING_REVIEW,
+        lifecycle_status=ProposalLifecycleStatus.DRAFT
+    )
+    db.add(proposal)
+    db.commit()
+    db.refresh(proposal)
+
+    return {
+        "id": proposal.id,
+        "rfp_id": proposal.rfp_id,
+        "title": proposal.title,
+        "tender_number": payload.tender_number,
+        "customer_id": payload.customer_id,
+        "status": proposal.status,
+        "message": "Proposal docket created successfully."
+    }
+
+
+@router.get("/{proposal_id}/requirements", response_model=List[RFPRequirementResponse])
+def get_proposal_requirements(
+    proposal_id: str,
+    pillar: Optional[str] = None,
+    compliance_status: Optional[ComplianceStatus] = None,
+    human_approved: Optional[bool] = None,
+    search: Optional[str] = None,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(200, ge=1, le=500),
+    db: Session = Depends(get_db)
+):
+    """Lists requirements for a proposal with filtering by pillar, status, approval and search"""
+    prop = db.get(Proposal, proposal_id)
+    if not prop:
+        raise HTTPException(status_code=404, detail="Proposal not found.")
+    
+    stmt = select(RFPRequirement).where(RFPRequirement.rfp_id == prop.rfp_id)
+    if pillar:
+        stmt = stmt.where(RFPRequirement.iqsec_pillar == pillar)
+    if compliance_status:
+        stmt = stmt.where(RFPRequirement.compliance_status == compliance_status)
+    if human_approved is not None:
+        stmt = stmt.where(RFPRequirement.human_approved == human_approved)
+    
+    records = db.execute(stmt.offset(skip).limit(limit)).scalars().all()
+    if search:
+        s = search.lower()
+        records = [r for r in records if s in r.requirement_code.lower() or s in r.effective_text.lower() or (r.section_title and s in r.section_title.lower())]
+    return [RFPRequirementResponse.model_validate(r) for r in records]
 
 
 @router.post("/generate/{rfp_id}", response_model=ProposalSummaryResponse)
@@ -236,6 +360,7 @@ def review_and_override_requirement(
     technical_response: Optional[str] = Body(None),
     human_approved: bool = Body(True),
     reviewer_name: str = Body("PreSales_Analyst"),
+    reviewer_comment: Optional[str] = Body(None),
     db: Session = Depends(get_db)
 ):
     """
@@ -250,6 +375,8 @@ def review_and_override_requirement(
         req.compliance_status = compliance_status
     if technical_response:
         req.technical_response = technical_response
+    if reviewer_comment:
+        req.modification_notes = reviewer_comment
 
     req.human_approved = human_approved
     req.reviewed_by = reviewer_name

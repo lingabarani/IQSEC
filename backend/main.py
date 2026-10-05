@@ -60,6 +60,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
+dist_dir = os.path.join(frontend_dir, "dist")
+dist_assets = os.path.join(dist_dir, "assets")
+
+if os.path.exists(dist_assets):
+    app.mount("/assets", StaticFiles(directory=dist_assets), name="assets")
+
 if os.path.exists(frontend_dir):
     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
 
@@ -77,7 +83,10 @@ def root():
 
 @app.get("/dashboard")
 def get_dashboard():
-    """Serves the IQSEC Proposal Automation Web Application"""
+    """Serves the IQSEC Enterprise Proposal Automation Web Application"""
+    dist_index = os.path.join(dist_dir, "index.html")
+    if os.path.exists(dist_index):
+        return FileResponse(dist_index)
     index_file = os.path.join(frontend_dir, "index.html")
     if os.path.exists(index_file):
         return FileResponse(index_file)

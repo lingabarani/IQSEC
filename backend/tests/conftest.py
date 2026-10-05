@@ -12,8 +12,10 @@ from backend.app.db.base import Base
 import backend.app.db.models  # Register all models on Base
 from backend.app.db.session import get_db
 
-TEST_DB_FILE = "/tmp/test_iqsec_proposals.db"
-TEST_DB_URL = f"sqlite:///{TEST_DB_FILE}"
+import tempfile
+
+TEST_DB_FILE = os.path.join(tempfile.gettempdir(), "test_iqsec_proposals.db")
+TEST_DB_URL = f"sqlite:///{TEST_DB_FILE.replace(os.sep, '/')}"
 
 engine = create_engine(
     TEST_DB_URL,

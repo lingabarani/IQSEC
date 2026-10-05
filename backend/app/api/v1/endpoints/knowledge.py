@@ -47,8 +47,9 @@ async def upload_knowledge_document(
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are supported for knowledge base.")
 
-    os.makedirs("/tmp/iqsec_knowledge_uploads", exist_ok=True)
-    temp_path = f"/tmp/iqsec_knowledge_uploads/{uuid.uuid4().hex[:8]}_{file.filename}"
+    upload_dir = os.path.join(tempfile.gettempdir(), "iqsec_knowledge_uploads")
+    os.makedirs(upload_dir, exist_ok=True)
+    temp_path = os.path.join(upload_dir, f"{uuid.uuid4().hex[:8]}_{file.filename}")
 
     with open(temp_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -136,4 +137,67 @@ def list_knowledge_documents(
         }
         for d in docs
     ]
+
+
+@router.get("/products")
+def list_products():
+    """Lists available products, services, and OEM partner solutions in the IQSEC catalog"""
+    return [
+        {
+            "id": "prod-1",
+            "name": "Product ABC (OT Security Suite)",
+            "category": "OT Infrastructure / SCADA",
+            "sku": "IQ-OT-DEF-9000-E",
+            "version": "v4.2 Enterprise",
+            "manufacturer": "XYZ Technologies / IQSEC Solutions",
+            "tier": "Tier-1 Certified OEM Partner",
+            "capabilities": "Continuous OT monitoring, DPI for Modbus/DNP3, 15-min automated incident triage, zero network disruption.",
+            "status": "Available"
+        },
+        {
+            "id": "prod-2",
+            "name": "IQSEC NextGen SOC MDR",
+            "category": "SOC & SIEM Operations",
+            "sku": "IQ-SOC-247-ENT",
+            "version": "v2026.1",
+            "manufacturer": "IQSEC Cybersecurity Services",
+            "tier": "Proprietary Managed Service",
+            "capabilities": "24/7/365 active monitoring, ISO 27001 / CMMI Nivel 3 certified, SLA 15-min Sev-1 response, redundant Tier-3 data centers.",
+            "status": "Available"
+        },
+        {
+            "id": "prod-3",
+            "name": "IQSEC CloudGuard Multicloud CSPM/CWPP",
+            "category": "Cloud Security",
+            "sku": "IQ-CLD-SEC-PRO",
+            "version": "v3.8",
+            "manufacturer": "IQSEC Cloud Security Alliance",
+            "tier": "AWS & Azure Premier Partner",
+            "capabilities": "Native ingestion of CloudTrail, VPC Flow Logs, and Azure Activity Logs, automated CIS & CNBV compliance mapping.",
+            "status": "Available"
+        },
+        {
+            "id": "prod-4",
+            "name": "IQSEC Privileged Access Manager (PAM)",
+            "category": "Identity & Access Management",
+            "sku": "IQ-PAM-VAULT-800",
+            "version": "v14.0 Enterprise",
+            "manufacturer": "CyberArk / IQSEC Solutions",
+            "tier": "Platinum Certified Partner",
+            "capabilities": "RDP/SSH video session recording, credential auto-rotation, WORM immutable storage, active directory integration.",
+            "status": "Available"
+        },
+        {
+            "id": "prod-5",
+            "name": "IQSEC Cyber Threat Intelligence (CTI)",
+            "category": "Threat Intelligence",
+            "sku": "IQ-CTI-STIX-20",
+            "version": "v5.0",
+            "manufacturer": "Mandiant / IQSEC Labs",
+            "tier": "Strategic Partner",
+            "capabilities": "Commercial & national feeds (CERT-MX, FIRST), automated STIX/TAXII ingestion, contextual MITRE ATT&CK v14 correlation.",
+            "status": "Available"
+        }
+    ]
+
 

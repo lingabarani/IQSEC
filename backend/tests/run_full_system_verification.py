@@ -11,6 +11,14 @@ Validates all backend pipelines:
 """
 import os
 import sys
+
+# Ensure project root is in sys.path when run directly
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
 import asyncio
 import zipfile
 import openpyxl
@@ -333,7 +341,8 @@ async def run_verification():
     # 7. Multi-Format Deliverable Exporter (.xlsx, .docx, .pptx, .zip)
     # -------------------------------------------------------------
     print("\n[TEST 7] Testing Multi-Format Deliverable Exporters...")
-    export_dir = "/tmp/iqsec_verify_exports"
+    import tempfile
+    export_dir = os.path.join(tempfile.gettempdir(), "iqsec_verify_exports")
     os.makedirs(export_dir, exist_ok=True)
 
     rfp_record = db.get(RFPDocument, "rfp_verify_e2e")

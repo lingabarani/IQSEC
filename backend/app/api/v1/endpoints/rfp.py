@@ -29,6 +29,22 @@ router = APIRouter()
 s3_client = boto3.client("s3", region_name=settings.AWS_REGION)
 
 
+@router.get("", response_model=List[RFPDocumentResponse])
+def list_rfp_documents(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    """Lists all uploaded RFP / tender documents with requirement counts"""
+    records = db.execute(select(RFPDocument).offset(skip).limit(limit)).scalars().all()
+    res = []
+    for rfp in records:
+        item = RFPDocumentResponse.model_validate(rfp)
+        item.total_requirements = len(rfp.requirements)
+        res.append(item)
+    return res
+
+
 @router.post("/upload", response_model=RFPUploadResponse)
 async def upload_rfp_document(
     file: UploadFile = File(...),
@@ -47,8 +63,9 @@ async def upload_rfp_document(
         raise HTTPException(status_code=400, detail="Only PDF files are supported.")
 
     doc_id = f"rfp_{uuid.uuid4().hex[:12]}"
-    os.makedirs("/tmp/iqsec_uploads", exist_ok=True)
-    temp_path = f"/tmp/iqsec_uploads/{doc_id}_{file.filename}"
+    upload_dir = os.path.join(tempfile.gettempdir(), "iqsec_uploads")
+    os.makedirs(upload_dir, exist_ok=True)
+    temp_path = os.path.join(upload_dir, f"{doc_id}_{file.filename}")
 
     with open(temp_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -145,8 +162,9 @@ async def upload_addendum_document(
         raise HTTPException(status_code=404, detail="Parent RFP document not found.")
 
     addendum_id = f"add_{uuid.uuid4().hex[:12]}"
-    os.makedirs("/tmp/iqsec_uploads", exist_ok=True)
-    temp_path = f"/tmp/iqsec_uploads/{addendum_id}_{file.filename}"
+    upload_dir = os.path.join(tempfile.gettempdir(), "iqsec_uploads")
+    os.makedirs(upload_dir, exist_ok=True)
+    temp_path = os.path.join(upload_dir, f"{addendum_id}_{file.filename}")
 
     with open(temp_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
