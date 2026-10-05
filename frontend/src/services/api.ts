@@ -6,31 +6,84 @@ import {
   ProductCatalogItem,
   KnowledgeDocumentItem,
   PackagingDossierManifest,
-  ExportAuditHistoryItem
+  ExportAuditHistoryItem,
+  IQSECPillar
 } from '../types';
 
 const API_BASE = '/api/v1';
 
-// Resilient default proposal docket
+// Resilient government & enterprise proposal dockets catalog
 export const FALLBACK_PROPOSALS: Proposal[] = [
   {
     id: "prop_cfe_2026_001",
     rfp_id: "rfp_cfe_2026_001",
-    title: "Tender ABC 2026 (ABC-2026-001) - Propuesta Técnica y Económica",
+    title: "Tender ABC 2026 (ABC-2026-001) - CFE Telecomunicaciones & Ciberseguridad",
     tender_number: "ABC-2026-001",
-    customer_id: "CFE Nacional MX",
+    customer_id: "CFE Telecomunicaciones",
     status: "IN_REVIEW",
     version: 2,
-    total_requirements: 150,
-    compliant_count: 120,
-    exception_count: 18,
-    non_compliant_count: 12,
-    overall_compliance_rate: 82.0,
+    total_requirements: 30,
+    compliant_count: 28,
+    exception_count: 2,
+    non_compliant_count: 0,
+    overall_compliance_rate: 93.3,
     sabana_status: "SABANA_APPROVED",
     lifecycle_status: "PROPOSAL_IN_REVIEW",
     created_at: "2026-10-05T04:10:55"
+  },
+  {
+    id: "prop_pemex_2026_042",
+    rfp_id: "rfp_pemex_2026_042",
+    title: "Licitación PEMEX-2026-042 - Seguridad Perimetral & SOC Industrial OT/IT",
+    tender_number: "PEMEX-2026-042",
+    customer_id: "Petróleos Mexicanos (PEMEX)",
+    status: "IN_REVIEW",
+    version: 1,
+    total_requirements: 48,
+    compliant_count: 46,
+    exception_count: 2,
+    non_compliant_count: 0,
+    overall_compliance_rate: 95.8,
+    sabana_status: "SABANA_APPROVED",
+    lifecycle_status: "FINAL_SIGN_OFF",
+    created_at: "2026-10-04T18:30:00"
+  },
+  {
+    id: "prop_sat_2026_015",
+    rfp_id: "rfp_sat_2026_015",
+    title: "Licitación SAT-LPN-2026-015 - Bóveda Criptográfica y Detección XDR en Nube",
+    tender_number: "SAT-LPN-2026-015",
+    customer_id: "Servicio de Administración Tributaria (SAT)",
+    status: "IN_REVIEW",
+    version: 1,
+    total_requirements: 64,
+    compliant_count: 57,
+    exception_count: 5,
+    non_compliant_count: 2,
+    overall_compliance_rate: 89.0,
+    sabana_status: "PENDING_REVIEW",
+    lifecycle_status: "PROPOSAL_IN_REVIEW",
+    created_at: "2026-10-03T11:15:00"
+  },
+  {
+    id: "prop_bmx_2026_009",
+    rfp_id: "rfp_bmx_2026_009",
+    title: "Concurso BMX-2026-009 - Resiliencia Cibernética & Encriptación de Pagos SPEI",
+    tender_number: "BMX-2026-009",
+    customer_id: "Banco de México (Banxico)",
+    status: "APPROVED_AND_RELEASED",
+    version: 3,
+    total_requirements: 35,
+    compliant_count: 32,
+    exception_count: 3,
+    non_compliant_count: 0,
+    overall_compliance_rate: 91.4,
+    sabana_status: "SABANA_APPROVED",
+    lifecycle_status: "FINAL_SIGN_OFF",
+    created_at: "2026-10-02T09:00:00"
   }
 ];
+
 
 // Resilient default requirements list matching view_proposal_requirement.png
 export const FALLBACK_REQUIREMENTS: Requirement[] = [
@@ -211,13 +264,19 @@ export async function fetchHealth(): Promise<HealthStatus> {
 export async function fetchProposals(): Promise<Proposal[]> {
   try {
     const res = await fetch(`${API_BASE}/proposal`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    return data && data.length > 0 ? data : FALLBACK_PROPOSALS;
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.length > 0) {
+        // Merge backend proposals with fallback catalog to guarantee rich multi-proposal selection
+        const existingIds = new Set(data.map((p: any) => p.id));
+        const merged = [...data, ...FALLBACK_PROPOSALS.filter(p => !existingIds.has(p.id))];
+        return merged;
+      }
+    }
   } catch (err) {
     console.warn('Backend proposal fetch failed, using fallback proposals docket:', err);
-    return FALLBACK_PROPOSALS;
   }
+  return FALLBACK_PROPOSALS;
 }
 
 export async function createProposalDocket(payload: {
@@ -323,6 +382,46 @@ export async function fetchRequirements(
     }
   } catch (err) {
     console.warn('Backend requirements fetch failed, using fallback requirements matrix:', err);
+  }
+
+  // Provide tailored requirements based on active tender ID
+  if (proposalId === 'prop_pemex_2026_042') {
+    return FALLBACK_REQUIREMENTS.map((r, i) => ({
+      ...r,
+      id: `req_pemex_${i + 1}`,
+      rfp_id: 'rfp_pemex_2026_042',
+      code: `PMX-${String(i + 1).padStart(3, '0')}`,
+      requirement_code: `PMX-${String(i + 1).padStart(3, '0')}`,
+      pillar: (i % 2 === 0 ? 'THREAT_INTEL' : 'SOC_SIEM') as IQSECPillar,
+      iqsec_pillar: (i % 2 === 0 ? 'THREAT_INTEL' : 'SOC_SIEM') as IQSECPillar,
+      citations: [{ doc: 'PEMEX_Bases_Tecnicas_2026.pdf', page: i + 2, quote: 'Soporte 24/7 en plataformas SCADA e infraestructura crítica.', score: 0.98 }]
+    }));
+  }
+
+  if (proposalId === 'prop_sat_2026_015') {
+    return FALLBACK_REQUIREMENTS.map((r, i) => ({
+      ...r,
+      id: `req_sat_${i + 1}`,
+      rfp_id: 'rfp_sat_2026_015',
+      code: `SAT-${String(i + 1).padStart(3, '0')}`,
+      requirement_code: `SAT-${String(i + 1).padStart(3, '0')}`,
+      pillar: (i % 2 === 0 ? 'CLOUD_SECURITY' : 'IDENTITY_ACCESS') as IQSECPillar,
+      iqsec_pillar: (i % 2 === 0 ? 'CLOUD_SECURITY' : 'IDENTITY_ACCESS') as IQSECPillar,
+      citations: [{ doc: 'SAT_Licitacion_Nube_2026.pdf', page: i + 3, quote: 'Bóvedas de llaves HSM FIPS 140-3 y encriptación de datos tributarios.', score: 0.94 }]
+    }));
+  }
+
+  if (proposalId === 'prop_bmx_2026_009') {
+    return FALLBACK_REQUIREMENTS.map((r, i) => ({
+      ...r,
+      id: `req_bmx_${i + 1}`,
+      rfp_id: 'rfp_bmx_2026_009',
+      code: `BMX-${String(i + 1).padStart(3, '0')}`,
+      requirement_code: `BMX-${String(i + 1).padStart(3, '0')}`,
+      pillar: 'SOC_SIEM' as IQSECPillar,
+      iqsec_pillar: 'SOC_SIEM' as IQSECPillar,
+      citations: [{ doc: 'Banxico_Resiliencia_SPEI.pdf', page: i + 1, quote: 'Alta disponibilidad 99.999% y resiliencia ante ataques DDoS financieros.', score: 0.99 }]
+    }));
   }
 
   return FALLBACK_REQUIREMENTS;

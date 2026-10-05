@@ -85,6 +85,7 @@ const MainLayout: React.FC = () => {
         <TopHeader
           onSaveDraft={() => addToast('Borrador de propuesta guardado exitosamente.', 'success')}
           onCancel={() => addToast('Operación cancelada.', 'info')}
+          onNewProposal={() => setCurrentTab('new_proposal')}
         />
 
         {/* Dynamic Tab Views */}

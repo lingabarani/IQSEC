@@ -144,7 +144,54 @@ const translations: Record<Locale, Record<string, string>> = {
     'val.title': 'Governance & Validation Queue',
     'val.subtitle': 'Two-stage human-in-the-loop review and executive sign-off authority',
     'val.stage1': 'Stage 1: Pre-Sales Technical Sábana Review',
-    'val.stage2': 'Stage 2: Final Proposal Executive Sign-off'
+    'val.stage2': 'Stage 2: Final Proposal Executive Sign-off',
+
+    // Authentication & Login View
+    'auth.signInTitle': 'Sign in to IQSEC',
+    'auth.signUpTitle': 'Create Enterprise Account',
+    'auth.signInSubtitle': 'Access the AI Proposal Generator & Governance Workspace',
+    'auth.signUpSubtitle': 'Register as an authorized presales engineer or proposal director',
+    'auth.tabSSO': 'Enterprise SSO',
+    'auth.tabCredentials': 'Credentials',
+    'auth.tabSmartCard': 'SmartCard / FIDO2',
+    'auth.ssoOkta': 'Continue with Okta Verify',
+    'auth.ssoAzure': 'Continue with Microsoft Entra ID',
+    'auth.ssoGoogle': 'Continue with Google Workspace',
+    'auth.emailLabel': 'Corporate Work Email',
+    'auth.passwordLabel': 'Security Password',
+    'auth.fullNameLabel': 'Full Name & Title',
+    'auth.roleLabel': 'Authorized Role',
+    'auth.rememberWorkstation': 'Remember this secure workstation (TLS session)',
+    'auth.forgotPassword': 'Forgot password?',
+    'auth.signInButton': 'Sign In to Workspace →',
+    'auth.signUpButton': 'Create Authorized Account →',
+    'auth.quickDemoProfiles': 'QUICK 1-CLICK DEMO PROFILES:',
+    'auth.orCredentials': 'OR AUTHENTICATE WITH CREDENTIALS',
+    'auth.orSSO': 'OR SINGLE SIGN-ON (SAML 2.0)',
+    'auth.presalesAuditRole': 'Pre-Sales Technical Audit (Stage 1)',
+    'auth.executiveSignRole': 'Executive Legal Sign-Off (Stage 2)',
+    'auth.complianceTriageRole': 'RAG Grounding & AI Clause Triage',
+
+    // Sidebar & Navigation Rich Keys
+    'sidebar.activeDocket': 'ACTIVE DOCKET',
+    'sidebar.complianceScore': 'Compliance Rate',
+    'sidebar.sabanaSigned': 'Sábana Matrix: Approved',
+    'sidebar.stage2Ready': 'Stage 2: Ready for Sign-Off',
+    'sidebar.agentStatus': 'AI PIPELINE STATUS',
+    'sidebar.bedrockClaude': 'Bedrock Claude 3.5 Sonnet',
+    'sidebar.openSearchRag': 'OpenSearch Hybrid RAG',
+    'sidebar.cryptoLedger': 'Tamper-Evident SHA-256 Ledger',
+    'sidebar.quickFilters': 'QUICK SHORTCUTS',
+    'sidebar.flaggedExceptions': '2 Exceptions / In Review',
+    'sidebar.allClauses': '30 Grounded Clauses',
+    'sidebar.viewDockets': 'Switch Docket',
+    'sidebar.systemOperational': 'All Multi-Agents Operational',
+
+    // Proposal Switcher & Header
+    'header.createNewProposal': '+ Ingest New Tender / Create Proposal',
+    'header.selectProposal': 'Select Tender Docket',
+    'header.allTenders': 'GOVERNMENT & ENTERPRISE TENDERS',
+    'header.saveDraft': 'Save Draft'
   },
   es: {
     // Brand & Global
@@ -281,7 +328,55 @@ const translations: Record<Locale, Record<string, string>> = {
     'val.title': 'Mesa de Gobierno y Validación',
     'val.subtitle': 'Flujo de revisión en dos etapas con intervención humana y firma ejecutiva',
     'val.stage1': 'Etapa 1: Validación Técnica de Sábana (Preventa)',
-    'val.stage2': 'Etapa 2: Firma Ejecutiva y Liberación de Propuesta'
+    'val.stage2': 'Etapa 2: Firma Ejecutiva y Liberación de Propuesta',
+
+    // Authentication & Login View (Spanish)
+    'auth.signInTitle': 'Iniciar Sesión en IQSEC',
+    'auth.signUpTitle': 'Crear Cuenta Corporativa',
+    'auth.signInSubtitle': 'Acceso a la Plataforma de Licitaciones y Mesa de Gobierno IA',
+    'auth.signUpSubtitle': 'Registro de Ingeniero de Preventa o Director de Propuestas',
+    'auth.tabSSO': 'SSO Corporativo',
+    'auth.tabCredentials': 'Credenciales',
+    'auth.tabSmartCard': 'Tarjeta Inteligente / FIDO2',
+    'auth.ssoOkta': 'Continuar con Okta Verify',
+    'auth.ssoAzure': 'Continuar con Microsoft Entra ID',
+    'auth.ssoGoogle': 'Continuar con Google Workspace',
+    'auth.emailLabel': 'Correo Electrónico Corporativo',
+    'auth.passwordLabel': 'Contraseña de Seguridad',
+    'auth.fullNameLabel': 'Nombre Completo y Cargo',
+    'auth.roleLabel': 'Rol Asignado',
+    'auth.rememberWorkstation': 'Recordar esta estación de trabajo (Sesión TLS)',
+    'auth.forgotPassword': '¿Olvidó su contraseña?',
+    'auth.signInButton': 'Ingresar al Espacio de Trabajo →',
+    'auth.signUpButton': 'Crear Cuenta Autorizada →',
+    'auth.quickDemoProfiles': 'PERFILES DEMO DE 1-CLIC:',
+    'auth.orCredentials': 'O AUTENTICAR CON CREDENCIALES',
+    'auth.orSSO': 'O INICIO DE SESIÓN ÚNICO (SAML 2.0)',
+    'auth.presalesAuditRole': 'Auditoría Técnica de Preventa (Etapa 1)',
+    'auth.executiveSignRole': 'Firma Legal y Ejecutiva (Etapa 2)',
+    'auth.complianceTriageRole': 'Sustento RAG y Triage de Cláusulas',
+
+    // Sidebar & Navigation Rich Keys (Spanish)
+    'sidebar.activeDocket': 'EXPEDIENTE ACTIVO',
+    'sidebar.complianceScore': 'Tasa de Cumplimiento',
+    'sidebar.sabanaSigned': 'Matriz Sábana: Aprobada',
+    'sidebar.stage2Ready': 'Etapa 2: Lista para Firma',
+    'sidebar.agentStatus': 'ESTADO PIPELINE IA',
+    'sidebar.bedrockClaude': 'Bedrock Claude 3.5 Sonnet',
+    'sidebar.openSearchRag': 'OpenSearch RAG Híbrido',
+    'sidebar.cryptoLedger': 'Libro Inmutable SHA-256',
+    'sidebar.quickFilters': 'ACCESOS RÁPIDOS',
+    'sidebar.flaggedExceptions': '2 Excepciones / En Revisión',
+    'sidebar.allClauses': '30 Cláusulas Sustentadas',
+    'sidebar.viewDockets': 'Cambiar Expediente',
+    'sidebar.systemOperational': 'Todos los Agentes Operativos',
+
+    // Proposal Switcher & Header (Spanish)
+    'header.createNewProposal': '+ Ingestar Licitación / Nueva Propuesta',
+    'header.selectProposal': 'Seleccionar Expediente',
+    'header.allTenders': 'LICITACIONES PÚBLICAS Y PRIVADAS',
+    'header.saveDraft': 'Guardar Borrador'
+
   }
 };
 
