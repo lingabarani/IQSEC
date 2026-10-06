@@ -50,10 +50,15 @@ def seed_cfe_data():
                 "status": ComplianceStatus.COMPLIES,
                 "confidence": 0.98,
                 "pillar": IQSECPillar.SOC_SIEM,
+                "mapped_product": "IQSEC NextGen SOC & SIEM Multi-Cloud Managed Service",
+                "oem_manufacturer": "Elastic Security / Splunk Cloud / AWS KMS",
+                "associated_deliverable": "ENT-SOC-01: Arquitectura de Ingestión Multi-Cloud (25,000 EPS) con Llaves KMS",
                 "response": "IQSEC SOC architecture delivers high-throughput Elastic Security & Splunk ingest exceeding 25,000 EPS with TLS 1.3 encryption and KMS keys.",
                 "citations": [{"doc": "01_Whitepaper_IQSEC_SOC_NextGen.pdf", "page": 4, "quote": "Ingesta distribuida con buffers Kafka y soporte para más de 30,000 EPS por nodo.", "score": 0.97}],
                 "approved": True,
-                "reviewer": "Alejandro Ruiz"
+                "reviewer": "Alejandro Ruiz",
+                "stage2_approved": True,
+                "stage2_approver": "Alejandro Vergara Torres"
             },
             {
                 "id": "req_cfe_002",
@@ -65,13 +70,18 @@ def seed_cfe_data():
                 "status": ComplianceStatus.COMPLIES_WITH_EXCEPTION,
                 "confidence": 0.84,
                 "pillar": IQSECPillar.INCIDENT_RESPONSE,
+                "mapped_product": "IQSEC OT Shield & SCADA Threat Containment Service",
+                "oem_manufacturer": "Palo Alto Networks / Fortinet Industrial / Nozomi",
+                "associated_deliverable": "ENT-IR-02: Protocolo de Triage y Aislamiento OT/IT con Aprobación Manual en <15 min",
                 "response": "The proposed solution supports automated IT containment and standard EDR playbooks within 15 minutes, but requires manual gateway approval for legacy SCADA/OT serial bus segmentation to prevent network disruption.",
                 "citations": [
                     {"doc": "Tender.pdf", "page": 18, "quote": "...el adjudicado deberá garantizar respuesta inmediata no mayor a 15 minutos en subestaciones y enlaces troncales...", "score": 0.968}
                 ],
                 "approved": False,
                 "reviewer": None,
-                "comment": "SLA verified with client; manual OT confirmation required prior to isolation to prevent emergency generator trip."
+                "comment": "SLA verified with client; manual OT confirmation required prior to isolation to prevent emergency generator trip.",
+                "stage2_approved": False,
+                "stage2_approver": None
             },
             {
                 "id": "req_cfe_003",
@@ -83,10 +93,15 @@ def seed_cfe_data():
                 "status": ComplianceStatus.DOES_NOT_COMPLY,
                 "confidence": 0.72,
                 "pillar": IQSECPillar.SOC_SIEM,
+                "mapped_product": "IQSEC Secure Boundary Gateway (Proxy Aislado)",
+                "oem_manufacturer": "Adquisición Especializada / Subcontratista Homologado",
+                "associated_deliverable": "ENT-SOC-03: Propuesta de Aislamiento por Software Proxy de Alta Seguridad",
                 "response": "IQSEC proposes certified software proxy isolation; physical hardware data diode appliances require specialized subcontractor procurement.",
                 "citations": [{"doc": "02_Catalogo_Servicios_MSSP_2026.pdf", "page": 19, "quote": "Módulos de aislamiento perimetral mediante proxies de alta seguridad.", "score": 0.74}],
                 "approved": False,
-                "reviewer": "Carlos Mendez"
+                "reviewer": "Carlos Mendez",
+                "stage2_approved": False,
+                "stage2_approver": None
             },
             {
                 "id": "req_cfe_004",
@@ -98,10 +113,15 @@ def seed_cfe_data():
                 "status": ComplianceStatus.COMPLIES,
                 "confidence": 0.99,
                 "pillar": IQSECPillar.GRC,
+                "mapped_product": "IQSEC Cryptographic Operations & Hardware Security",
+                "oem_manufacturer": "Thales Luna HSM / AWS CloudHSM (FIPS 140-3 Level 3)",
+                "associated_deliverable": "ENT-GRC-04: Certificado de Validación Criptográfica NIST FIPS 140-3 Nivel 3",
                 "response": "All IQSEC communications and telemetry endpoints enforce TLS 1.3 ciphers with HSM FIPS 140-3 Level 3 validation.",
                 "citations": [{"doc": "03_Certificaciones_IQSEC_Oficial.pdf", "page": 2, "quote": "Módulos de cifrado certificados bajo estándares NIST FIPS 140-3 Nivel 3.", "score": 0.99}],
                 "approved": True,
-                "reviewer": "Alejandro Ruiz"
+                "reviewer": "Alejandro Ruiz",
+                "stage2_approved": True,
+                "stage2_approver": "Alejandro Vergara Torres"
             },
             {
                 "id": "req_cfe_005",
@@ -113,10 +133,15 @@ def seed_cfe_data():
                 "status": ComplianceStatus.COMPLIES,
                 "confidence": 0.95,
                 "pillar": IQSECPillar.IAM,
+                "mapped_product": "IQSEC Identity Governance & Cloud Directory Sync",
+                "oem_manufacturer": "Microsoft Entra ID / CyberArk Identity / SCIM v2",
+                "associated_deliverable": "ENT-IAM-05: Conectores Bidireccionales SCIM 2.0 y Matriz de Roles RBAC",
                 "response": "Native SCIM 2.0 and SAML 2.0 connectors allow sub-second synchronization of group policies and JML lifecycle provisioning.",
                 "citations": [{"doc": "02_Catalogo_Servicios_MSSP_2026.pdf", "page": 28, "quote": "Conectores bidireccionales SCIM 2.0 para directorios corporativos federados.", "score": 0.95}],
                 "approved": False,
-                "reviewer": None
+                "reviewer": None,
+                "stage2_approved": False,
+                "stage2_approver": None
             },
             {
                 "id": "req_cfe_006",
@@ -128,10 +153,15 @@ def seed_cfe_data():
                 "status": ComplianceStatus.COMPLIES,
                 "confidence": 0.96,
                 "pillar": IQSECPillar.SOC_SIEM,
+                "mapped_product": "IQSEC Cyber Threat Intelligence Sentinel (CTI)",
+                "oem_manufacturer": "Recorded Future / Mandiant / CERT-MX STIX-TAXII",
+                "associated_deliverable": "ENT-CTI-06: Feeds Automatizados STIX/TAXII y Mapeo MITRE ATT&CK v14",
                 "response": "La plataforma de IQSEC integra feeds CTI propietarios, feeds comerciales de primer nivel (Recorded Future, Mandiant) e indicadores del CERT-MX y FIRST.",
                 "citations": [{"doc": "01_Whitepaper_IQSEC_SOC_NextGen.pdf", "page": 9, "quote": "Módulo CTI con ingestión automática de STIX/TAXII y correlación contextual con MITRE ATT&CK v14.", "score": 0.94}],
                 "approved": True,
-                "reviewer": "Alejandro Ruiz"
+                "reviewer": "Alejandro Ruiz",
+                "stage2_approved": True,
+                "stage2_approver": "Alejandro Vergara Torres"
             },
             {
                 "id": "req_cfe_007",
@@ -143,10 +173,15 @@ def seed_cfe_data():
                 "status": ComplianceStatus.COMPLIES,
                 "confidence": 0.99,
                 "pillar": IQSECPillar.GRC,
+                "mapped_product": "IQSEC Institutional Quality & Assurance Framework",
+                "oem_manufacturer": "BSI Group (ISO 27001:2022) / CMMI Institute (CMMI-SVC v2.0 L3)",
+                "associated_deliverable": "ENT-GRC-07: Dictamen BSI IS-784920 y Acreditación CMMI Nivel 3 Vigentes",
                 "response": "IQSEC cuenta con certificación ISO/IEC 27001:2022 vigente expedida por BSI con número de registro IS-784920, además de certificación CMMI-SVC v2.0 Nivel 3 vigente.",
                 "citations": [{"doc": "03_Certificaciones_IQSEC_Oficial.pdf", "page": 2, "quote": "Certificado BSI ISO/IEC 27001:2022 alcance completo MSSP y Operaciones de Ciberseguridad.", "score": 0.99}],
                 "approved": True,
-                "reviewer": "Director_Cumplimiento"
+                "reviewer": "Director_Cumplimiento",
+                "stage2_approved": True,
+                "stage2_approver": "Alejandro Vergara Torres"
             },
             {
                 "id": "req_cfe_008",
@@ -158,10 +193,15 @@ def seed_cfe_data():
                 "status": ComplianceStatus.COMPLIES_WITH_EXCEPTION,
                 "confidence": 0.88,
                 "pillar": IQSECPillar.SOC_SIEM,
+                "mapped_product": "IQSEC Tiered Log Ingestion & Forensic Long-Term Vault",
+                "oem_manufacturer": "AWS S3 Intelligent-Tiering / OpenSearch Warm Tier",
+                "associated_deliverable": "ENT-SOC-08: Arquitectura de Retención 90d Hot NVMe + 275d Warm S3 (365d Total)",
                 "response": "IQSEC ofrece 90 días en almacenamiento ultra-rápido (SSD NVMe) y 275 días adicionales en almacenamiento warm de alta disponibilidad (S3 IA), cumpliendo con un ciclo total de 365 días a menor costo operativo.",
                 "citations": [{"doc": "02_Catalogo_Servicios_MSSP_2026.pdf", "page": 22, "quote": "Arquitectura de almacenamiento tiering: 90 días hot, 275 días warm, 5 años cold para auditorías forenses.", "score": 0.89}],
                 "approved": False,
-                "reviewer": None
+                "reviewer": None,
+                "stage2_approved": False,
+                "stage2_approver": None
             },
             {
                 "id": "req_cfe_009",
@@ -173,10 +213,15 @@ def seed_cfe_data():
                 "status": ComplianceStatus.COMPLIES,
                 "confidence": 0.95,
                 "pillar": IQSECPillar.SOC_SIEM,
+                "mapped_product": "IQSEC Proactive Threat Hunting & Adversary Emulation",
+                "oem_manufacturer": "IQSEC Red & Purple Team Labs / MITRE ATT&CK",
+                "associated_deliverable": "ENT-SOC-09: Metodología y Reportes Quincenales de Caza de Amenazas Senior",
                 "response": "El equipo especializado de Threat Hunting de IQSEC realiza barridos proactivos quincenales basados en hipótesis de amenazas actuales, frameworks MITRE y tácticas de atacantes de estados-nación.",
                 "citations": [{"doc": "01_Whitepaper_IQSEC_SOC_NextGen.pdf", "page": 12, "quote": "Metodología de Threat Hunting recurrente con entregable quincenal de hallazgos y mitigaciones.", "score": 0.93}],
                 "approved": True,
-                "reviewer": "Alejandro Ruiz"
+                "reviewer": "Alejandro Ruiz",
+                "stage2_approved": True,
+                "stage2_approver": "Alejandro Vergara Torres"
             },
             {
                 "id": "req_cfe_010",
@@ -188,10 +233,15 @@ def seed_cfe_data():
                 "status": ComplianceStatus.COMPLIES,
                 "confidence": 0.96,
                 "pillar": IQSECPillar.IAM,
+                "mapped_product": "IQSEC Privileged Access Management (PAM) Vault & Audit",
+                "oem_manufacturer": "CyberArk Privileged Session Manager / WORM Storage",
+                "associated_deliverable": "ENT-IAM-10: Bitácora Indexada de Grabaciones de Sesión RDP/SSH y Almacén WORM",
                 "response": "Todas las sesiones de administración hacia la infraestructura de los clientes son grabadas en audio y video con marcas de tiempo inmutables y almacenamiento WORM bajo la plataforma PAM corporativa de IQSEC.",
                 "citations": [{"doc": "02_Catalogo_Servicios_MSSP_2026.pdf", "page": 29, "quote": "Auditoría completa PAM con grabación indexada de sesiones interactivas RDP, SSH y web administrativa.", "score": 0.95}],
                 "approved": True,
-                "reviewer": "Alejandro Ruiz"
+                "reviewer": "Alejandro Ruiz",
+                "stage2_approved": True,
+                "stage2_approver": "Alejandro Vergara Torres"
             }
         ]
 
@@ -216,11 +266,27 @@ def seed_cfe_data():
                     compliance_rationale=s.get("comment", s["response"]),
                     confidence_score=s["confidence"],
                     exact_citations=s["citations"],
+                    mapped_product=s.get("mapped_product"),
+                    oem_manufacturer=s.get("oem_manufacturer"),
+                    associated_deliverable=s.get("associated_deliverable"),
                     human_approved=s["approved"],
                     reviewed_by=s["reviewer"],
+                    stage2_approved=s.get("stage2_approved", False),
+                    stage2_approver=s.get("stage2_approver"),
                     modification_notes=s.get("comment")
                 )
                 db.add(req)
+            else:
+                # Update existing records with the 20-column data
+                req.mapped_product = s.get("mapped_product")
+                req.oem_manufacturer = s.get("oem_manufacturer")
+                req.associated_deliverable = s.get("associated_deliverable")
+                req.stage2_approved = s.get("stage2_approved", False)
+                req.stage2_approver = s.get("stage2_approver")
+                if "response" in s and not req.technical_response:
+                    req.technical_response = s["response"]
+                if "confidence" in s:
+                    req.confidence_score = s["confidence"]
         db.commit()
 
         # 3. Create Proposal Record

@@ -50,14 +50,44 @@ export interface Requirement {
   compliance_rationale?: string;
   citations?: Citation[];
   exact_citations?: Citation[];
+  requirement_type?: string;
+  mapped_product?: string;
+  oem_manufacturer?: string;
+  associated_deliverable?: string;
   human_approved: boolean;
   reviewed_by: string | null;
+  stage2_approved?: boolean;
+  stage2_approver?: string | null;
   modification_notes?: string | null;
   is_modified_by_addendum?: boolean;
   addendum_reference?: string | null;
   addendum_question_num?: string | null;
+  addendum_page_num?: number | null;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface ModelBenchmarkMetrics {
+  provider_name: string;
+  model_identifier: string;
+  hosting_type: string;
+  groundedness_rate_percent: number;
+  citation_coverage_percent: number;
+  hallucination_count: number;
+  avg_latency_seconds_per_req: number;
+  estimated_cost_per_proposal_usd: number;
+  monthly_cost_15_proposals_usd: number;
+  recommendation_note: string;
+}
+
+export interface ComparativeBenchmarkReport {
+  benchmark_id: string;
+  tender_name: string;
+  total_requirements_evaluated: number;
+  bedrock_metrics: ModelBenchmarkMetrics;
+  self_hosted_qwen_metrics: ModelBenchmarkMetrics;
+  winner_for_pilot: string;
+  executive_summary: string;
 }
 
 export interface Proposal {

@@ -26,6 +26,9 @@ class ComplianceEvaluationResult(BaseModel):
         description="Confidence level between 0.0 and 1.0 based on evidence strength."
     )
     exact_citations: List[EvidenceCitation] = Field(default_factory=list)
+    mapped_product: Optional[str] = Field(default=None, description="IQSEC product or service mapped to this requirement.")
+    oem_manufacturer: Optional[str] = Field(default=None, description="Technology vendor / OEM partner.")
+    associated_deliverable: Optional[str] = Field(default=None, description="Mandatory tangible deliverable associated with compliance.")
     human_approved: bool = False
 
     @field_validator("compliance_status", mode="before")

@@ -12,6 +12,7 @@ import {
   CaretLeft,
   Sparkle,
   Check,
+  Scales,
   Cpu,
   LockKey
 } from '@phosphor-icons/react';
@@ -44,6 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'products', label: t('nav.products'), icon: <Package size={20} /> },
     { id: 'clarifications', label: t('nav.clarifications'), icon: <Question size={20} /> },
     { id: 'validation', label: t('nav.validation'), icon: <SealCheck size={20} />, badge: requirements.length || 30 },
+    { id: 'benchmark', label: t('nav.benchmark'), icon: <Scales size={20} /> },
     { id: 'outputs', label: t('nav.outputs'), icon: <DownloadSimple size={20} /> },
   ];
 

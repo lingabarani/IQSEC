@@ -19,10 +19,11 @@ import { ProductsView } from './views/ProductsView';
 import { ClarificationsView } from './views/ClarificationsView';
 import { ValidationQueueView } from './views/ValidationQueueView';
 import { NewProposalView } from './views/NewProposalView';
+import { BenchmarkView } from './views/BenchmarkView';
 
 const MainLayout: React.FC = () => {
   const { t } = useI18n();
-  const { requirements, setActiveRequirement } = useProposal();
+  const { activeProposal, requirements, setActiveRequirement } = useProposal();
   const { isAuthenticated } = useAuth();
 
   const [currentTab, setCurrentTab] = useState<string>('dashboard');
@@ -116,6 +117,10 @@ const MainLayout: React.FC = () => {
 
           {currentTab === 'validation' && (
             <ValidationQueueView onNotify={addToast} />
+          )}
+
+          {currentTab === 'benchmark' && (
+            <BenchmarkView activeProposal={activeProposal} />
           )}
 
           {currentTab === 'outputs' && (

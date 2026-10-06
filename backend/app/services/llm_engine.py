@@ -35,6 +35,9 @@ Debes responder ÚNICAMENTE con un objeto JSON válido con la siguiente estructu
 {
   "requirement_code": "<codigo_requerimiento>",
   "compliance_status": "CUMPLE" | "CUMPLE_CON_EXCEPCION" | "NO_CUMPLE" | "NOT_ENOUGH_EVIDENCE",
+  "mapped_product": "<servicio_o_producto_ofertado_de_iqsec>",
+  "oem_manufacturer": "<fabricante_o_marca_tecnologica>",
+  "associated_deliverable": "<entregable_vinculado_obligatorio_en_caso_de_cumple>",
   "technical_response": "<redaccion_formal_en_espanol>",
   "compliance_rationale": "<justificacion_basada_en_evidencia>",
   "confidence_score": <flotante_entre_0.0_y_1.0>
@@ -123,6 +126,9 @@ Genera la evaluación en JSON conforme a las instrucciones:"""
             return ComplianceEvaluationResult(
                 requirement_code=data.get("requirement_code", req_code),
                 compliance_status=data.get("compliance_status", "CUMPLE"),
+                mapped_product=data.get("mapped_product", "IQSEC Enterprise Cyber Security Suite"),
+                oem_manufacturer=data.get("oem_manufacturer", "IQSEC Certified Architecture"),
+                associated_deliverable=data.get("associated_deliverable", "ENT-01: Plan de Trabajo y Entregable de Arquitectura Técnica"),
                 technical_response=data.get("technical_response", "IQSEC S.A. de C.V. CUMPLE con el requerimiento."),
                 compliance_rationale=data.get("compliance_rationale", "Basado en capacidades autorizadas de IQSEC."),
                 confidence_score=float(data.get("confidence_score", 0.90)),
@@ -133,6 +139,9 @@ Genera la evaluación en JSON conforme a las instrucciones:"""
             return ComplianceEvaluationResult(
                 requirement_code=req_code,
                 compliance_status=ComplianceStatus.NOT_ENOUGH_EVIDENCE,
+                mapped_product="Por Definir en Aclaraciones",
+                oem_manufacturer="OEM Por Validar",
+                associated_deliverable=None,
                 technical_response="IQSEC S.A. de C.V. evaluará este requerimiento en mesa de aclaraciones.",
                 compliance_rationale="Respuesta no estructurada por el modelo.",
                 confidence_score=0.40,
@@ -150,10 +159,53 @@ Genera la evaluación en JSON conforme a las instrucciones:"""
         Deterministic, legally grounded proposal synthesis based on retrieved evidence.
         Enforces groundedness: if evidence is insufficient, returns NOT_ENOUGH_EVIDENCE.
         """
+        # Map product, OEM, and tangible deliverable per IQSEC pillar (Solution Document Specification)
+        pillar_mappings = {
+            IQSECPillar.SOC_SIEM: {
+                "product": "IQSEC NextGen SOC & SIEM As-A-Service",
+                "oem": "Splunk Enterprise / Elastic Security / AWS",
+                "deliverable": "ENT-SOC-01: Arquitectura de Ingestión Multi-Cloud EPS y Dashboards Operativos 24/7"
+            },
+            IQSECPillar.CLOUD_SECURITY: {
+                "product": "IQSEC Cloud Security Posture Management (CSPM)",
+                "oem": "Palo Alto Prisma Cloud / AWS Security Hub",
+                "deliverable": "ENT-CSPM-02: Reporte Trimestral de Conformidad y Remediación de Cargas Cloud"
+            },
+            IQSECPillar.IAM: {
+                "product": "IQSEC Identity Governance & Privileged Access (PAM)",
+                "oem": "CyberArk / Microsoft Entra ID / Okta",
+                "deliverable": "ENT-IAM-03: Bitácora de Sesiones Privilegiadas PAM y Conectores SCIM v2"
+            },
+            IQSECPillar.VULN_MGMT: {
+                "product": "IQSEC Continuous Vulnerability Management (RBVM)",
+                "oem": "Tenable.io / Qualys Cloud Platform",
+                "deliverable": "ENT-VULN-04: Matriz de Priorización de Vulnerabilidades y SLAs de Parcheo"
+            },
+            IQSECPillar.INCIDENT_RESPONSE: {
+                "product": "IQSEC CSIRT & OT/IT Incident Response Retainer",
+                "oem": "CrowdStrike Falcon Complete / Mandiant",
+                "deliverable": "ENT-IR-05: Protocolo de Triage y Aislamiento de Redes en <15 min con Matriz SCADA"
+            },
+            IQSECPillar.GRC: {
+                "product": "IQSEC GRC Compliance & Cryptographic Assurance",
+                "oem": "BSI Group (ISO 27001) / HSM FIPS 140-3",
+                "deliverable": "ENT-GRC-06: Dictamen de Certificación ISO 27001:2022 y CMMI-SVC Nivel 3 Vigentes"
+            },
+            IQSECPillar.GENERAL: {
+                "product": "IQSEC Managed Cyber Defense Services (MSSP)",
+                "oem": "Arquitectura Homologada IQSEC",
+                "deliverable": "ENT-GEN-07: Plan de Trabajo y Cronograma de Entregables Contractuales"
+            }
+        }
+        pm = pillar_mappings.get(pillar, pillar_mappings[IQSECPillar.GENERAL])
+
         if not evidences or len(evidences) == 0:
             return ComplianceEvaluationResult(
                 requirement_code=requirement_code,
                 compliance_status=ComplianceStatus.NOT_ENOUGH_EVIDENCE,
+                mapped_product="Por Confirmar en Aclaraciones",
+                oem_manufacturer="OEM Por Validar",
+                associated_deliverable=None,
                 technical_response=(
                     f"IQSEC S.A. de C.V. informa que el requerimiento '{requirement_code}' requiere aclaración "
                     f"técnica adicional durante la Junta de Aclaraciones, al no contar con suficiente evidencia documental "
@@ -186,6 +238,7 @@ Genera la evaluación en JSON conforme a las instrucciones:"""
                 f"Capacidad comprobada en {top_ev.document_title} (Pág. {top_ev.page_number}) "
                 f"con alineación directa a los estándares solicitados."
             )
+            deliverable = pm["deliverable"]
         else:
             status = ComplianceStatus.COMPLIES_WITH_EXCEPTION
             confidence = 0.72
@@ -195,10 +248,14 @@ Genera la evaluación en JSON conforme a las instrucciones:"""
                 f"operativa garantizando la continuidad y seguridad del servicio."
             )
             rationale = f"Alineación parcial basada en {top_ev.document_title}."
+            deliverable = f"{pm['deliverable']} (Ajustado a Excepción)"
 
         return ComplianceEvaluationResult(
             requirement_code=requirement_code,
             compliance_status=status,
+            mapped_product=pm["product"],
+            oem_manufacturer=pm["oem"],
+            associated_deliverable=deliverable,
             technical_response=technical_response,
             compliance_rationale=rationale,
             confidence_score=confidence,

@@ -86,8 +86,17 @@ class RFPRequirement(Base, TimestampMixin):
     compliance_rationale: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     confidence_score: Mapped[float] = mapped_column(Float, default=0.0)
     exact_citations: Mapped[Optional[List[dict]]] = mapped_column(JSON, default=list)
+
+    # Solution Document Sábana Columns (Mapped Offerings & Traceability)
+    mapped_product: Mapped[Optional[str]] = mapped_column(String(256), nullable=True)
+    oem_manufacturer: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    associated_deliverable: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    # 2-Stage Human Governance & Sign-off
     human_approved: Mapped[bool] = mapped_column(Boolean, default=False)
     reviewed_by: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    stage2_approved: Mapped[bool] = mapped_column(Boolean, default=False)
+    stage2_approver: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
 
     # Relationships
     rfp_document: Mapped["RFPDocument"] = relationship(

@@ -358,14 +358,20 @@ def review_and_override_requirement(
     requirement_id: str,
     compliance_status: Optional[ComplianceStatus] = Body(None),
     technical_response: Optional[str] = Body(None),
+    mapped_product: Optional[str] = Body(None),
+    oem_manufacturer: Optional[str] = Body(None),
+    associated_deliverable: Optional[str] = Body(None),
     human_approved: bool = Body(True),
     reviewer_name: str = Body("PreSales_Analyst"),
     reviewer_comment: Optional[str] = Body(None),
+    stage2_approved: Optional[bool] = Body(None),
+    stage2_approver: Optional[str] = Body(None),
     db: Session = Depends(get_db)
 ):
     """
     Smart Triage Inline Review:
-    Allows pre-sales engineers to approve, override, or refine AI-drafted responses.
+    Allows pre-sales engineers to approve, override, or refine AI-drafted responses,
+    mapped products, OEMs, and associated deliverables.
     """
     req = db.get(RFPRequirement, requirement_id)
     if not req:
@@ -375,8 +381,18 @@ def review_and_override_requirement(
         req.compliance_status = compliance_status
     if technical_response:
         req.technical_response = technical_response
+    if mapped_product is not None:
+        req.mapped_product = mapped_product
+    if oem_manufacturer is not None:
+        req.oem_manufacturer = oem_manufacturer
+    if associated_deliverable is not None:
+        req.associated_deliverable = associated_deliverable
     if reviewer_comment:
         req.modification_notes = reviewer_comment
+    if stage2_approved is not None:
+        req.stage2_approved = stage2_approved
+    if stage2_approver is not None:
+        req.stage2_approver = stage2_approver
 
     req.human_approved = human_approved
     req.reviewed_by = reviewer_name

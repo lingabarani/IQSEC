@@ -31,6 +31,7 @@ const translations: Record<Locale, Record<string, string>> = {
     'nav.products': 'Products',
     'nav.clarifications': 'Clarifications',
     'nav.validation': 'Validation',
+    'nav.benchmark': 'Model Benchmark',
     'nav.outputs': 'Outputs',
     'nav.newProposal': 'New Proposal',
 
@@ -215,6 +216,7 @@ const translations: Record<Locale, Record<string, string>> = {
     'nav.products': 'Catálogo de Soluciones',
     'nav.clarifications': 'Aclaraciones',
     'nav.validation': 'Validación Humana',
+    'nav.benchmark': 'Benchmark Modelos',
     'nav.outputs': 'Entregables y Salidas',
     'nav.newProposal': 'Nueva Propuesta',
 

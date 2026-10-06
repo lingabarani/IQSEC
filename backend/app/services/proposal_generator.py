@@ -88,6 +88,9 @@ class ProposalGenerator:
             req.compliance_rationale = eval_res.compliance_rationale
             req.confidence_score = eval_res.confidence_score
             req.exact_citations = [c.model_dump() for c in eval_res.exact_citations]
+            req.mapped_product = eval_res.mapped_product
+            req.oem_manufacturer = eval_res.oem_manufacturer
+            req.associated_deliverable = eval_res.associated_deliverable
 
             # Smart Triage Auto-Approval rule (confidence >= 0.95 and CUMPLE)
             if eval_res.confidence_score >= 0.95 and eval_res.compliance_status == ComplianceStatus.COMPLIES:

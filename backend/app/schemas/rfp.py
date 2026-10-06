@@ -38,8 +38,13 @@ class RFPRequirementResponse(BaseModel):
     compliance_rationale: Optional[str] = None
     confidence_score: float = 0.0
     exact_citations: Optional[List[Dict[str, Any]]] = None
+    mapped_product: Optional[str] = None
+    oem_manufacturer: Optional[str] = None
+    associated_deliverable: Optional[str] = None
     human_approved: bool = False
     reviewed_by: Optional[str] = None
+    stage2_approved: bool = False
+    stage2_approver: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 
